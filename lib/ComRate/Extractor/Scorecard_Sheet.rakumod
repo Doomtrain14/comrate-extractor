@@ -10,9 +10,7 @@ has Inline::Python $.py = sub{
 from fuzzywuzzy import process
 
 def score(input, *dictionary):
-    #print(f"input {input} dictionary {dictionary}")
     highest = process.extractOne(input,dictionary)
-    print(f"highest is a {str(type(highest))}")
     return highest[1]
 PYTHON
 
