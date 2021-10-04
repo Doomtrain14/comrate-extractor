@@ -1,0 +1,357 @@
+==================================================================================
+ComRate Financial Statements Extractor
+V1.0 (Excel Framework only) Spec
+Tom Gracey Sept 2021
+==================================================================================
+
+This spec is written as an approximate pseudocode description of suggested code components.
+
+The scheme uses the following naming conventions:
+
+My::Class - Expect an object of class My::Class to BELONG TO an object of class My
+My_Class - Expect an object of class My_Class to INHERIT FROM class My
+
+(can only be a rough guide since e.g. My::Class could be used in multiple classes)
+
+"Scorecard" - scorecards return a probabilistic score
+
+"Identifier" - identifiers produce definite outputs (from scorecard results or otherwise)
+More specifically they should map an input set "to_identify" to a target set "options"
+
+
+------------------------------------------------------------------------------------
+script extract.raku
+
+Simple script to use during development which invokes the extractor for an excel file
+specified in command line parameters
+
+
+#!/usr/bin/raku
+use v6;
+
+my $ess = ComRate::Extractor::Essentials;
+
+sub MAIN ( Str  :$filename ){
+
+    my $xr = ComRate::Extractor::ExcelReader.new(
+        directory => $ess.path( 'excel' ),
+        filename => $filename
+    );
+
+    $xr->extract;
+
+    # ... Dump $xr->results as JSON
+
+}
+
+-------------------------------------------------------------------------------------
+MODULES
+
+class ComRate::Extractor::Essentials
+
+    # Module for accessing commonly used necessities such as
+    # config settings, path information, database connection
+
+    database
+    config
+       load config from file (yaml format)
+
+
+--------------------------------------------------------------------------------------
+class ComRate::Extractor::Excel
+
+    # The main extractor class
+
+    use Spreadsheet::XLSX
+
+    # params:
+
+    ess (required param)
+    directory (required param)
+    filename (required param)
+    workbook
+    results
+
+    method load_workbook(){
+        my $ss = Spreadsheet::XLSX.new( ... )
+        my $wb = $ss.workbook; # or whatever
+        self.workbook = $wb;
+    }
+
+    method extract(){
+
+        # In the below loop the sheet is identified, then the sections within the sheet
+        # and finally the params within the section.
+        # However it is likely that e.g. identifying a sheet will be done by first evaluating
+        # section scorecards within the sheet. In this case the scorecard for the sheet will
+        # contain scorecards for sections, and when it comes to identifying the sections these
+        # scorecards will already be complete. For efficiency we should avoid repeating scorecard
+        # calculations, either by passing completed scorecards to the section identifier, or
+        # caching by some other method
+
+        my $sheet_idr = ComRate::Extractor::Identifier_Sheet.new( ess => self.ess, workbook => self.workbook )
+        $sheet_idr.identify;
+
+        my $results = {};
+
+        my $structure_idr = ComRate::Extractor::Identifier_Structure.new( ... )
+        my $section_idr = ComRate::Extractor::Identifier_Section.new( ... )
+
+
+        for $sheet_idr.sheets.kv -> $sheet_name,$sheet {
+
+            $structure_idr.to_identify = $sheet;
+            $structure_idr.identify;
+
+            $section_idr.to_identify( $structure_idr.sections )
+            $section_idr.identify;
+
+            $results{ $sheet_name } = {};
+
+            for $section_idr.sections.kv -> $section_name, $section {
+
+                my $param_idr = ComRate::Extractor::Identifier_Param.new( ... )
+
+                $param_idr.to_identify = self.ess.config<sheet_names>{ $sheet_name }{ $section_name };
+                $param_idr.options = $section.params;
+
+                $param_idr.identify;
+
+                $results{ $sheet_name }{ $section_name } = $param_idr.results;
+
+            }
+        }
+
+        self.results = $results;
+        return $results;
+    }
+
+
+--------------------------------------------------------------------------------------
+class ComRate::Extractor::Identifier
+
+    Base class for Identifiers. Identify a subset of the input data
+
+    ess (required param)
+    @to_identify
+    @options
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Identifier_Sheet
+
+    Module to determine which sheet is which (balance, cashflow, income)
+
+    ess (required param)
+    workbook (required param)
+
+    method identify(){
+        for self.ess.config<sheet_names> -> $sheet_name {
+
+            my $sc_name = "ComRate::Extractor::ExcelReader::Scorecard_Sheet_$sheet_name";
+            my $scorecard = ::( $sc_name ).new;
+
+            my @scores;
+
+            for self.workbook.sheets.kv -> $i,$sheet {
+
+                $scorecard.input( $worksheet );
+                $scorecard.evaluate;
+                @scores.push: $scorecard.score;
+
+            }
+
+            self.scores{ $sheet_name } = @scores;
+        }
+
+        # determine which combination of sheet assignments maximises sum of the scores
+
+        self.results = {
+            balance => $best_balance_sheet_id,
+
+            # ...
+        };
+    }
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Scorecard
+
+base class for scorecards
+
+    A scorecard evaluates a probabilistic score from a set of data
+
+    input (any type)
+    score (float)
+    evaluate
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Scorecard_Sheet
+
+    inherits from ComRate::Extractor::Scorecard
+
+    input (worksheet object)
+    evaluate (runs over 'dictionary' and populates 'score'))
+
+    use either native Raku module(s) e.g. Regex::FuzzyToken
+    or Inline::Python with fuzzywuzzy module to assign scores.
+    Initially this can simply parse a "dictionary" specific to the
+    type of scorecard.
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Scorecard_Sheet_Balance
+
+    dictionary => [
+        'Balance Sheet',
+        'Balance Statement',
+        'Statement of Balance',
+        'Balance',
+        'BS'
+    ]
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Scorecard_Sheet_Income
+
+    dictionary => [
+        'Income Sheet',
+        'Income Statement',
+        'Statement of Income',
+        'Income',
+        'Profit and Loss Sheet',
+        'Profit and Loss Statement',
+        'Profit and Loss'
+        # ...
+    ]
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Scorecard_Sheet_Cashflow
+
+    dictionary => [
+        # ...
+    ]
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Identifier_Structure
+
+    # Identify the structure of worksheets by
+    # row types by fixed set of criteria (at least for now)
+    # data column (also by fixed criteria)
+
+    # title row -> contains only text or empty cells
+    # data row -> contains text in left-hand cell(s) and numeric values in right hand cell(s)
+    # subtotal row -> contains text in left-hand cell(s) and SUM or SUBTOTAL formulae in right hand cell(s).
+
+    # params
+
+    ess (required param)
+    @to_identify = this will be worksheet rows, but perhaps
+    we just pass the worksheet as we also need to determine
+    data column?
+
+    row_types
+    sections
+    structure
+
+    method indentify(){
+        for self.worksheet.rows -> $row {
+
+            # identify type of row and record in row_types
+            # identify "sections" simultaneously.
+            # identify the "structure" of the worksheet,
+            # i.e. the relationship between sections
+
+            # Sections are defined as
+            # - 0 or more title row(s), followed by
+            # - 0 or more data rows and/or 0 or more child sections
+            # - 1 (sub)total row
+            # (with empty rows ignored)
+
+        }
+    }
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::Identifier_Section
+
+    # base class for identifying sections
+
+    @to_identify = the sections on a given worksheet
+    @options = the list of expected sections
+
+    method identify(){
+        my $rt = ComRate::Extractor::Identifier_RowType.new;
+        $rt.identify;
+
+        for self.sections -> $section_name {
+            my $scorecard = ::("ComRate::Extractor::ExcelReader::Scorecard_Section_$section_name").new;
+
+            for $rt.sections -> $section {
+
+                $scorecard.input( $section );
+                $scorecard.evaluate;
+
+            }
+        }
+    }
+
+
+--------------------------------------------------------------------------------------
+
+Comrate::Extractor::Identifier_Param
+
+    # identify the parameters in sections
+
+    # params
+
+    @to_identify    # this will be a set of parameters,
+            # e.g. 'Cash', 'Net accounts receivable', 'Inventory' etc.
+
+    @options # the list of expected parameters
+
+    method identify(){
+
+        # ...
+
+    }
+
+SECTION/PARAM SCORECARDS
+
+We can have specific coding for section/params scorecards as child modules which
+inherit from generic generic section/param scorecards - but only as necessary. For
+example if functionality is covered in the generic class then there is no need to
+create a child class (to avoid potentially creating hundreds of parameter classes).
+The code using the scorecards (probably the relevant Identifier) should check for a
+specific scorecard but use the generic one if this does not exist.
+
+
+--------------------------------------------------------------------------------------
+ComRate::Extractor::ExcelReader::Scorecard_Section
+
+    base class for "section" scorecards
+
+
+
+SECTION SCORECARDS
+
+ComRate::Extractor::Scorecard_Section_CurrentAssets
+ComRate::Extractor::Scorecard_Section_FixedAssets
+ComRate::Extractor::Scorecard_Section_Assets
+ComRate::Extractor::Scorecard_Section_CurrentLiabilities
+ComRate::Extractor::Scorecard_Section_LongTermLiabilities
+ComRate::Extractor::Scorecard_Section_ShareholdersEquity
+
+etc.
+
+
+PARAM SCORECARDS
+
+ComRate::Extractor::Scorecard_Param_PrepaidExpenses
+
+etc.
+
+(but perhaps we can avoid specific param scorecards
+in general?)

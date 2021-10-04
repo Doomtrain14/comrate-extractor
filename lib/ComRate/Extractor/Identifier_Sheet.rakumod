@@ -14,15 +14,8 @@ method identify {
 
 	for self.options.kv -> $opt_i, $option {
 
-        #say "option: $option";
-        #next if $option eq 'cashflow';
-        #next if $option eq 'income';
-
         my $idr_class = "ComRate::Extractor::Scorecard_Sheet_" ~ $option.tclc;
-        #require ::($idr_class);
 		my $scorecard = ::($idr_class).new;
-
-		#self.scores[ $opt_i ] = [];
 
         my @opt_scores;
 		for self.to_identify.kv -> $sh_i, $sheet {
@@ -39,7 +32,6 @@ method identify {
 		}
 
         @opt_scores = @opt_scores.sort({ $^b<score> <=> $^a<score> });
-        #say "OPT_SCORES FOR opt_i $opt_i: " ~ @opt_scores.gist;
 
         self.scores[ $opt_i ] = @opt_scores;
 	}
@@ -58,13 +50,9 @@ method identify {
 		my $total = 0;
 		for @.combo.kv -> $opt_i, $pos_i {
             next if $pos_i == -1;
-            #say "opt_i $opt_i, sh_i $sh_i";
-            #say "score: " ~ self.scores[ $opt_i ][ $sh_i ];
             my $score = self.scores[ $opt_i ][ $pos_i ]<score>;
 			$total += $score;
 		}
-        #say "combo: " ~ @.combo.raku;
-        #say "total: $total";
 
 		if $total > $best_total {
 			@best_combo = @.combo;
@@ -72,7 +60,6 @@ method identify {
 		}
 	}  while self.increment_combo;
 
-    #say "best_combo: " ~ Dump( @best_combo );
 	self.identified = {};
 
     for @best_combo.kv -> $opt_i, $pos_i {
@@ -87,7 +74,6 @@ method increment_combo{
 
 	my $inc_index = 0;
 	my $inc_ret = self.inc_combo_index( $inc_index );
-    #say "inc_ret: $inc_ret";
     return $inc_ret;
 
 }
@@ -96,16 +82,12 @@ method increment_combo{
 method inc_combo_index( Int $inc_index ) {
 
 	my $more = True;
-    #say "combo " ~ Dump( @.combo );
-    #my @ti = @.to_identify;
-    #say "to identify " ~ @ti.gist;
 
     my $max_opt = self.options.end;
     my $max_idy = self.to_identify.end;
     my $max_index = $max_opt > $max_idy ?? $max_idy !! $max_opt;
 
 	if @.combo[ $inc_index ] < $max_index {
-        #say "less than";
         if self.combo[ $inc_index ] == -1 {
             self.combo[ $inc_index ] = 0;
         } else {
@@ -118,10 +100,8 @@ method inc_combo_index( Int $inc_index ) {
 			return True;
 		}
 	} elsif $inc_index == self.combo.end {
-        #say "equal";
 		return False;
 	} else {
-        #say "else";
 		@.combo[ $inc_index ] = -1;
 		my $next_index = $inc_index + 1;
 		return self.inc_combo_index( $next_index );

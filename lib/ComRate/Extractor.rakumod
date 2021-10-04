@@ -2,7 +2,9 @@ use v6;
 use Data::Dump;
 use ComRate::Extractor::Essentials;
 use ComRate::Extractor::Workbook;
+use ComRate::Extractor::Identifier_Structure;
 use ComRate::Extractor::Identifier_Sheet;
+
 
 unit class ComRate::Extractor;
 
@@ -22,14 +24,21 @@ method extract {
         options => @options
 	);
 
+    my $structure_idr = ComRate::Extractor::Identifier_Structure.new(
+        ess => $.ess
+    );
+
+
     $sheet_idr.identify;
 
 	my $results = {};
 
 	for $sheet_idr.identified.kv -> $opt, $sh_i {
+        $structure_idr.to_identify = self.workbook.sheets[ $sh_i ].cells;
+        $structure_idr.identify;
 
         say "$opt -> $sh_i";
-        
+
 	}
 
 }

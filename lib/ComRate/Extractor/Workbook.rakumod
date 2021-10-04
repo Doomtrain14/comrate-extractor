@@ -1,7 +1,8 @@
 use v6;
-use Spreadsheet::XLSX;
+use Spreadsheet::ParseXLSX:from<Perl5>;
 use ComRate::Extractor::Essentials;
 use ComRate::Extractor::Worksheet;
+use Data::Dump;
 
 unit class ComRate::Extractor::Workbook;
 
@@ -13,16 +14,14 @@ has @.sheets;
 
 method load {
 
-	say "filename: " ~ $!filename;
 	my $m = self.filename ~~ / \. (<-[\.]>+) $ /;
 	my $ext = $m.list[0];
-	say "ext: " ~ $ext;
 
 	if $ext eq 'xlsx' {
 
-		#my Str @frags = (self.filename);
 		my $path = self.ess.path( 'data', $!filename );
-		$!xlsx = Spreadsheet::XLSX.load( $path );
+		my $parser = Spreadsheet::ParseXLSX.new;
+        $!xlsx = $parser.parse( $path.absolute );
 
 	} else {
 
