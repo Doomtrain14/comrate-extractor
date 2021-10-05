@@ -355,3 +355,71 @@ etc.
 
 (but perhaps we can avoid specific param scorecards
 in general?)
+
+
+PARAMETERS TO EXTRACT
+
+The initial requirement is to attempt to extract the following 48 parameters:
+
+Income Statement
+Sales Revenue
+Cost of Goods Sold
+Gross Profit
+Sales, General and Admin Expenses
+Operating Profit (EBIT)
+Non-Operating Income
+Unusual Expenses
+Interest Expense
+Earnings Before Tax
+Income Tax Expense
+Net Income (Loss)
+
+(11 Parameters)
+
+
+Cash Flow Statement
+
+Net Income (Loss)
+Depreciation & Amortisation Expenses
+Increase (Decrease) in Other Items
+Net Cash From Operating Activities
+Capital Expenditure
+Investment in Other Assets
+Net Cash from Investing Activities
+Dividends or Distributions Paid
+Sale (Repurchase) of Equity
+Proceeds from Issuance of Debt
+Repayments of Long Term Debt
+Other Financing Activities
+Exchange Rate Fluctuations
+Net Increase in Cash and Equivalents
+
+(14 Parameters)
+
+
+Balance Sheet Statement
+
+Cash
+Accounts Payable
+Accounts Receivable
+Accrued Expenses Payable
+Inventory
+Short Term Notes Payable
+Prepaid Expenses
+Other Short Term Liabilities
+Total Current Assets
+Total Current Liabilities
+Property, Plant & Equipment
+Long Term Notes Payable
+Accumulated Depreciation
+Other Long Term Liabilities
+Net Fixed Assets
+Total Non-Current Liabilities
+Capital Stock
+Intangible Assets
+Retained Earnings (Deficit)
+Total Other Assets
+Total Shareholder’s Equity
+Total Assets
+Total Liabilities & Shareholder’s Equity
+(23 Parameters)
