@@ -12,3 +12,7 @@ method value {
 method formula {
     return $.xlsx<Formula>;
 }
+
+method type {
+    return $.xlsx ?? $.xlsx.type !! Nil;
+}
