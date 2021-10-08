@@ -2,8 +2,11 @@ use v6;
 use Data::Dump;
 use ComRate::Extractor::Essentials;
 use ComRate::Extractor::Workbook;
+use ComRate::Extractor::Worksheet;
 use ComRate::Extractor::Identifier_Structure;
 use ComRate::Extractor::Identifier_Sheet;
+
+#constant Worksheet = ComRate::Extractor::Worksheet;
 
 
 unit class ComRate::Extractor;
@@ -18,23 +21,20 @@ method extract {
 
     my @options = ['balance','cashflow','income'];
 
+    my Worksheet @to_identify = self.workbook.sheets;
+
 	my $sheet_idr = ComRate::Extractor::Identifier_Sheet.new(
-		ess => self.ess,
-		to_identify => self.workbook.sheets,
-        options => @options
+		:$!ess, :@to_identify, :@options
 	);
 
-    my $structure_idr = ComRate::Extractor::Identifier_Structure.new(
-        ess => $.ess
-    );
-
+    my $structure_idr = ComRate::Extractor::Identifier_Structure.new(:$.ess);
 
     $sheet_idr.identify;
 
 	my $results = {};
 
 	for $sheet_idr.identified.kv -> $opt, $sh_i {
-        $structure_idr.to_identify = self.workbook.sheets[ $sh_i ].cells;
+        $structure_idr.worksheet = self.workbook.sheets[ $sh_i ];
         $structure_idr.identify;
 
         say "$opt -> $sh_i";

@@ -1,11 +1,17 @@
 use v6;
-use ComRate::Extractor::Identifier;
 use Data::Dump;
+use ComRate::Extractor::Identifier;
+use ComRate::Extractor::Worksheet;
 use ComRate::Extractor::Scorecard_Sheet_Balance;
 use ComRate::Extractor::Scorecard_Sheet_Income;
 use ComRate::Extractor::Scorecard_Sheet_Cashflow;
 
-unit class ComRate::Extractor::Identifier_Sheet is ComRate::Extractor::Identifier;
+constant Worksheet = ComRate::Extractor::Worksheet;
+constant Identifier = ComRate::Extractor::Identifier;
+
+unit class ComRate::Extractor::Identifier_Sheet is Identifier;
+
+has Worksheet @.to_identify is rw;
 
 method identify {
 

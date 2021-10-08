@@ -1,7 +1,10 @@
 use v6;
 use ComRate::Extractor::Essentials;
 use Spreadsheet::ParseExcel::Worksheet:from<Perl5>;
+use ComRate::Extractor::Worksheet::Cell;
 use Data::Dump;
+
+constant Cell = ComRate::Extractor::Worksheet::Cell;
 
 unit class ComRate::Extractor::Worksheet;
 
@@ -9,27 +12,40 @@ has ComRate::Extractor::Essentials $.ess is required;
 
 has $.xlsx;
 has @.sections;
+has Int $.max_row;
+has Int $.max_col;
+has Int $.min_row;
+has Int $.min_col;
+has Str $.name;
 
-method name {
-    return $.xlsx.get_name;
+submethod BUILD ( :$xlsx, :$ess ) {
+    die "xlsx is required" unless $xlsx;
+    $!ess = $ess;
+
+    if $xlsx {
+        ( $!min_row, $!max_row ) = $xlsx.row_range;
+        ( $!min_col, $!max_col ) = $xlsx.col_range;
+        $!name = $xlsx.get_name;
+        $!xlsx = $xlsx;
+    }
 }
 
-method cells {
-    my $x = 0;
 
-    my $row = 10;
-    my $col = 3;
+#method name {
+#    return $.xlsx.get_name;
+#}
 
-    my ( $max_row, $min_row ) = $.xlsx.row_range;
-    my ( $max_col, $min_col ) = $.xlsx.col_range;
+method cell( Int $row_num, Int $col_num --> Cell ) {
 
-    say "row_range: $min_row:$max_row";
-    say "col_range: $min_col:$max_col";
-    #for $.xlsx<MinRow> .. $.xlsx<MaxRow> -> $row {
-    #    for $.xlsx<MinCol> .. $.xlsx<MaxCol> -> $col {
-            my $cell = $.xlsx.get_cell( $row, $col );
-            say "($row,$col): ", $cell ?? $cell<Formula> !! '';
-    #    }
-    #}
+    die "row $row_num is greater than maximum ( $.max_row )" if $row_num > $.max_row;
+    die "row $row_num is less than minimum ( $.min_row )" if $row_num < $.min_row;
+    die "col $col_num is greater than maximum ( $.max_col )" if $col_num > $.max_col;
+    die "row $col_num is less than minimum ( $.min_col )" if $col_num < $.min_col;
 
+    if $.xlsx {
+        my $cell = Cell.new(
+            xlsx => $.xlsx.get_cell( $row_num, $col_num )
+        );
+        return $cell;
+    }
 }
