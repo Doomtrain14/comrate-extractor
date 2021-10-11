@@ -5,6 +5,7 @@ use ComRate::Extractor::Workbook;
 use ComRate::Extractor::Worksheet;
 use ComRate::Extractor::Identifier_Structure;
 use ComRate::Extractor::Identifier_Sheet;
+use Data::Dump;
 
 #constant Worksheet = ComRate::Extractor::Worksheet;
 
@@ -36,6 +37,7 @@ method extract {
 	for $sheet_idr.identified.kv -> $opt, $sh_i {
         $structure_idr.worksheet = self.workbook.sheets[ $sh_i ];
         $structure_idr.identify;
+        say "structure: " ~ Dump( $structure_idr.structure );
 
         say "$opt -> $sh_i";
 
