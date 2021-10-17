@@ -1,0 +1,40 @@
+---
+income:
+    params:
+        gross profit:
+            synonyms:
+                - gross profit
+                - gross income
+                - gross margin
+                - sales profit
+            expected_sign: "+"
+
+        sales revenue:
+            synonyms:
+                - sales revenue
+                - revenue
+            expected_sign: "+"
+
+
+
+    relationships:
+        gross profit:
+            components:
+                - sales revenue
+                - cost of revenue
+            rel_type:
+                bound
+
+        sales revenue:
+            components:
+                - operating revenue
+                - non-operating revenue
+            rel_type:
+                bound
+
+        operating expenses:
+            components:
+                - selling general and administrative expenses
+                - research and development
+            rel_type:
+                unbound

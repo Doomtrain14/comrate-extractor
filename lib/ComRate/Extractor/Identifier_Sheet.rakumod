@@ -2,9 +2,9 @@ use v6;
 use Data::Dump;
 use ComRate::Extractor::Identifier;
 use ComRate::Extractor::Worksheet;
-use ComRate::Extractor::Scorecard_Sheet_Balance;
-use ComRate::Extractor::Scorecard_Sheet_Income;
 use ComRate::Extractor::Scorecard_Sheet_Cashflow;
+use ComRate::Extractor::Scorecard_Sheet_Income;
+use ComRate::Extractor::Scorecard_Sheet_Balance;
 
 constant Worksheet = ComRate::Extractor::Worksheet;
 constant Identifier = ComRate::Extractor::Identifier;
@@ -12,6 +12,36 @@ constant Identifier = ComRate::Extractor::Identifier;
 unit class ComRate::Extractor::Identifier_Sheet is Identifier;
 
 has Worksheet @.to_identify is rw;
+
+# the below "identify" method should be moved to the parent class
+# ie ComRate::Extractor::Identifier and made generic
+# it can be called "find_best_combo" as it finds the best
+# (ie highest scoring) combination from a test set. Currently it
+# evaluates score but does not return it (or stash it). We need to
+# (a) adjust the method so the score is returned
+# (b) also return a NORMALISED score. This will be
+#
+# sum( scores of best scoring combo ) / num elements in combo
+#
+# however if the number of elements to identify is LESS THAN
+# the number of options then we should pad the missing options with
+# the expected average score for each missing option. If we are
+# using fuzzywuzzy which gives a score between 0 and 100 we can use
+# 50 for the time being (I think not actually correct, but we can
+# update when we have more info). However, we need to add a method to
+# the scorecord(s) which returns this value (method could be called
+# "average_value"? )
+#
+# find_best_combo should take @options, @to_identify and the name
+# of the scoring module.
+#
+# I am thinking perhaps we should ditch having separate modules
+# for Balance, Cashflow and Income - ie just have
+# ComRate::Extractor::Scorecard_Sheet
+# and pass the sheet name as a variable
+# OR EVEN perhaps ditch scorecards altogether and integrate
+# with the Identifier class?
+# 
 
 method identify {
 
