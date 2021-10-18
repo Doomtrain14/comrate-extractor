@@ -1,0 +1,58 @@
+Fiscal Year ends in Sep - USD in Millions except per share data,2016,2017,2018,2019,2020
+Operating Cash Flow,66231,64225,77434,69391,80674
+Cash Flow From Continuing Operating Activities,66231,64225,77434,69391,80674
+Net Income From Continuing Operations,45687,48351,59531,55256,57411
+Depreciation Amortization Depletion,=B6,=C6,=D6,=E6,=F6
+Depreciation And Amortization,10505,10157,10903,12547,11056
+Deferred Tax,=SUM(B8:B8),=SUM(C8:C8),=SUM(D8:D8),=SUM(E8:E8),=SUM(F8:F8)
+Deferred Income Tax,4938,5966,-32590,-340,-215
+Stock Based Compensation,4210,4840,5340,6068,6829
+Other Non Cash Items,486,-166,-444,-652,-97
+Change In Working Capital,405,-4923,34694,-3488,5690
+Change In Receivables,476,-6347,-13332,3176,8470
+Changes In Account Receivables,527,-2093,-5322,245,6917
+Change In Inventory,217,-2723,828,-289,-127
+Change In Payables And Accrued Expense,=B16,=C16,=D16,=E16,=F16
+Change In Payable,2117,8966,9175,-1923,-4062
+Change In Account Payable,2117,8966,9175,-1923,-4062
+Change In Other Current Assets,1055,-5318,-423,873,-9588
+Change In Other Current Liabilities,-1906,1092,38449,-4700,8916
+Change In Other Working Capital,-2405,-4819,38023,-4452,1409
+Investing Cash Flow,=B22,=C22,=D22,=E22,=F22
+Cash Flow From Continuing Investing Activities,-45977,-46446,16066,45896,-4289
+Net Ppep And Sale,=SUM(B24:B24),=SUM(C24:C24),=SUM(D24:D24),=SUM(E24:E24),=SUM(F24:F24)
+Purchase Of Ppe,-12734,-12451,-13313,-10495,-7309
+Net Intangibles Purchase And Sale,=SUM(B26:B26),=SUM(C26:C26),=SUM(D26:D26),=SUM(E26:E26),=SUM(F26:F26)
+Purchase Of Intangibles,-814,-344,-,-,-
+Net Business Purchase And Sale,=B28,=C28,=D28,=E28,=F28
+Purchase Of Business,-297,-329,-721,-624,-1524
+Net Investment Purchase And Sale,-32022,-33542,30845,58093,5335
+Purchase Of Investment,-143816,-160007,-73227,-40631,-115148
+Sale Of Investment,111794,126465,104072,98724,120483
+Net Other Investing Changes,-924,-124,-745,-1078,-791
+Financing Cash Flow,=SUM(B34:B34),=SUM(C34:C34),=SUM(D34:D34),=SUM(E34:E34),=SUM(F34:F34)
+Cash Flow From Continuing Financing Activities,-20890,-17974,-87876,-90976,-86820
+Net Issuance Payments Of Debt,22057,29014,432,-7819,2499
+Net Long Term Debt Issuance,22454,25162,469,-1842,3462
+Long Term Debt Issuance,24954,28662,6969,6963,16091
+Long Term Debt Payments,-2500,-3500,-6500,-8805,-12629
+Net Short Term Debt Issuance,-397,3852,-37,-5977,-963
+Short Term Debt Payments,-,-,-,-,-963
+Net Common Stock Issuance,=SUM(B42:B43),=SUM(C42:C43),=SUM(D42:D43),=SUM(E42:E43),=SUM(F42:F43)
+Common Stock Issuance,495,555,669,781,880
+Common Stock Payments,-29722,-32900,-72738,-66897,-72358
+Cash Dividends Paid,=SUM(B45:B45),=SUM(C45:C45),=SUM(D45:D45),=SUM(E45:E45),=SUM(F45:F45)
+Common Stock Dividend Paid,-12150,-12769,-13712,-14119,-14081
+Net Other Financing Charges,-1570,-1874,-2527,-2922,-3760
+End Cash Position,=SUM(B48:B50),=SUM(C48:C50),=SUM(D48:D50),=SUM(E48:E50),=SUM(F48:F50)
+Changes In Cash,-636,-195,5624,24311,-10435
+Effect Of Exchange Rate Changes,-,-,-,-,-
+Beginning Cash Position,21120,20484,20289,25913,50224
+Income Tax Paid Supplemental Data,10444,11591,10417,15263,9501
+Interest Paid Supplemental Data,1316,2092,3022,3423,3002
+Capital Expenditure,-12734,-12451,-13313,-10495,-7309
+Issuance Of Capital Stock,495,555,669,781,880
+Issuance Of Debt,24954,28662,6969,6963,16091
+Repayment Of Debt,-2500,-3500,-6500,-8805,-12629
+Repurchase Of Capital Stock,-,-,-,-,-
+Free Cash Flow,53497,51774,64121,58896,73365

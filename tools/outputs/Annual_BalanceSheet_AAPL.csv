@@ -1,0 +1,56 @@
+Fiscal Year ends in Sep - USD in Millions except per share data,2016,2017,2018,2019,2020
+Total Assets,321686,375319,365725,338516,323888
+Current Assets,106869,128645,131339,162819,143713
+Cash Cash Equivalents And Short Term Investments,67155,74181,66301,100557,90943
+Cash And Cash Equivalents,20484,20289,25913,48844,38016
+Cash,8601,7982,11575,12204,17773
+Cash Equivalents,11883,12307,14338,36640,20243
+Short Term Investments,46671,53892,40388,51713,52927
+Receivables,29299,35673,48995,45804,37445
+Accounts Receivable,15754,17874,23186,22926,16120
+Other Receivables,13545,17799,25809,22878,21325
+Inventory,2132,4855,3956,4106,4061
+Other Current Assets,8283,13936,12087,12352,11264
+Total Non Current Assets,214817,246674,234386,175697,180175
+Net Ppe,27010,33783,41304,37378,36766
+Gross Ppe,61245,75076,90403,95957,103526
+Land And Improvements,10185,13587,16216,17085,17952
+Machinery Furniture Equipment,44543,54210,65982,69797,75291
+Leases,6517,7279,8205,9075,10283
+Accumulated Depreciation,-34235,-41293,-49099,-58579,-66760
+Goodwill And Other Intangible Assets,8620,8015,-,-,-
+Goodwill,5414,5717,-,-,-
+Other Intangible Assets,3206,2298,-,-,-
+Investments And Advances,170430,194714,170799,105341,100887
+Non Current Prepaid Assets,-,-,-,-,-
+Other Non Current Assets,8757,18177,22283,32978,42522
+Total Liabilities Net Minority Interest,193437,241272,258578,248028,258549
+Current Liabilities,79006,100814,115929,105718,105392
+Payables And Accrued Expenses,59321,44242,55888,46236,42296
+Payables,=B31,=C31,=D31,=E31,=F31
+Accounts Payable,37294,44242,55888,46236,42296
+Other Payable,-,-,-,-,-
+Current Accrued Expenses,22027,25744,-,-,-
+Current Debt And Capital Lease Obligation,=SUM(B35:B35),=SUM(C35:C35),=SUM(D35:D35),=SUM(E35:E35),=SUM(F35:F35)
+Current Debt,11605,18473,20748,16240,13769
+Current Notes Payable,-,-,-,-,-
+Commercial Paper,8105,11977,11964,5980,4996
+Other Current Borrowings,3500,6496,8784,10260,8773
+Current Deferred Liabilities,8080,7548,5966,5522,6643
+Current Deferred Revenue,8080,7548,5966,5522,6643
+Other Current Liabilities,-,30551,33327,37720,42684
+Total Non Current Liabilities,114431,140458,142649,142310,153157
+Long Term Debt And Capital Lease Obligation,=SUM(B44:B44),=SUM(C44:C44),=SUM(D44:D44),=SUM(E44:E44),=SUM(F44:F44)
+Long Term Debt,75427,97207,93735,91807,98667
+Non Current Deferred Liabilities,28949,34340,3223,-,-
+Non Current Deferred Taxes Liabilities,26019,31504,426,-,-
+Non Current Deferred Revenue,2930,2836,2797,-,-
+Other Non Current Liabilities,10055,8654,15325,20958,26320
+Total Equity Gross Minority Interest,=B50,=C50,=D50,=E50,=F50
+Stockholders Equity,128249,134047,107147,90488,65339
+Capital Stock,=SUM(B52:B53),=SUM(C52:C53),=SUM(D52:D53),=SUM(E52:E53),=SUM(F52:F53)
+Common Stock,31251,35867,40201,45174,50779
+Retained Earnings,96364,98330,70400,45898,14966
+Gains Losses Not Affecting Retained Earnings,634,-150,-3454,-584,-406
+Total Capitalization,203676,231254,200882,182295,164006
+Net Tangible Assets,-,-,-,-,-
