@@ -1,4 +1,4 @@
 ---
 dir:
-    base: /home/dev/comrate/extractor
+    base: /home/dev/comrate-extractor
     data: data
