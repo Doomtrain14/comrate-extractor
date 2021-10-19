@@ -71,7 +71,6 @@ class ComRate::Extractor::Essentials {
             $path = IO::Path.new(%.conf<main><dir><base>.Str).add($frag-dir);
         } else {
             $path = $*CWD.parent.add($dirname);
-            say $path; die;
         }
 
         for @frags -> $frag {
