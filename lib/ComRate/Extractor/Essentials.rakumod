@@ -62,6 +62,8 @@ class ComRate::Extractor::Essentials {
     method path( Str $dirname, *@frags ){
         #my @f = @frags || ();
 
+        say %.conf<main>;
+        die;
         my $frag-dir = %.conf<main><dir>{ $dirname };
         my IO::Path $path;
 
