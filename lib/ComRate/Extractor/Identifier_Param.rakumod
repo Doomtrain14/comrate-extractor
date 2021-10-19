@@ -1,5 +1,7 @@
 use v6;
 use ComRate::Extractor::Identifier;
+use Data::Dump;
+constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
 
@@ -8,20 +10,20 @@ unit class ComRate::Extractor::Identifier_Param is Identifier;
 has %.equations = (
     income => {
         'gross profit' => [ 'sales revenue', 'cost of revenue' ],
-        'sales revenue' => [ 'operating revenue', 'non-operating revenue' ],
-        'operating expenses' => [ 'selling general and administrative expenses', 'research and development', '...' ],
+        'sales revenue' => [ 'operating income', 'non-operating income' ],
+        'operating expenses' => [ 'selling general and administrative expenses', 'research and development' ],
         'total expenses' => [ 'cost of revenue', 'operating expenses', 'non-operating expenses' ],
         'operating income' => [ 'gross profit', 'operating expenses' ],
         'EBIT' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
         'EBITDA' => [ 'EBIT', 'depreciation and amortisation' ],
-        'depreciation and amortisation' => [ 'depreciation', 'amortisation' ]
-        'non-operating expenses' => [ 'interest expense', '...' ],
-        'non-operating income' => [ 'interest income', '...' ],
+        'depreciation and amortisation' => [ 'depreciation', 'amortisation' ],
+        'non-operating expenses' => [ 'interest expense' ],
+        'non-operating income' => [ 'interest income' ],
         'net non-operating income (expense)' => [ 'non-operating income', 'non-operating expense' ],
         'net other income (expense)' => [ 'other income', 'other expense' ],
         'total unusual items' => [ 'unusual income', 'unusual expense' ],
         'pretax income' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
-        'net income' => [ 'pretax income', 'tax provision' ]
+        #'net income' => [ 'pretax income', 'tax provision' ]
     }
 );
 
@@ -38,16 +40,78 @@ has %.params = (
         ],
         'sales revenue' => [ 'revenue' ],
         'cost of revenue' => [ 'cost of goods sold', 'cost of sales' ],
-        'operating income' => [ 'operating revenue' ],
+        'operating revenu' => [ 'operating income' ],
         'net income' => [ 'net earnings' ]
     }
 );
 
 has Str $.sheet_name is rw; # 'balance', 'cashflow', 'income'
 has @.to_identify is rw; # these will be the structure rows determined by Identifier_Structure
+has @.exp_eqns is rw;
+
+has $.line_count is rw = 0;
+has %.cache is rw;
+
+method index{
+
+    # %.equations needs replacing with input from the yaml
+    # we also will need to add in "eqn_type", which should
+    # be "bound" only if all constituent equations are "bound"
+    # but "unbound" if any one is "unbound"
+
+    for |%.equations<income>.kv -> $param, @comps {
+        self.expand_comps( $param, @comps );
+    }
+
+}
 
 
-method index {
+
+method expand_comps( $param, @comps ) {
+    return if self.seen( $param, @comps );
+    self.write_output( $param, @comps );
+
+    for @comps.kv -> $i, $comp {
+        my @comps_exp = @comps;
+
+        if %.equations<income>{ $comp } {
+            my @child_comps = |%.equations<income>{ $comp };
+            my $recurse = False;
+            for @child_comps -> $child_comp {
+                if $param eq $child_comp { $recurse = True; last }
+                if @comps_exp.grep: $child_comp { $recurse = True; last }
+            }
+
+            if not $recurse {
+                @comps_exp.splice( $i, 1, |@child_comps );
+                self.expand_comps( $param, @comps_exp );
+            }
+        }
+    }
+}
+
+
+method seen( $param, @comps ){
+    my $key = $param ~ '|' ~ @comps.sort.join('|');
+    return True if %.cache{ $key };
+    %.cache{ $key } = True;
+    return False;
+}
+
+method write_output( $param, @comps ){
+
+    # write to the database here
+
+    $.line_count++;
+    say "$.line_count: $param:\n";
+    for @comps -> $comp {
+        say "   $comp";
+    }
+    say "\n";
+}
+
+
+
     # use database tables to create an "index" for fast look ups
     #
     # index only $.sheet_name if this is proided, otherwise index all sheets
@@ -111,6 +175,7 @@ method index {
 
 
 method identify {
+
 
     # Algorithm as follows
     #
