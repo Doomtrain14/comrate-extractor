@@ -1,4 +1,4 @@
 ---
 dir:
-    base: /sdb/company/clients/comrate/extractor
+    base: /home/dev/comrate-extractor
     data: data

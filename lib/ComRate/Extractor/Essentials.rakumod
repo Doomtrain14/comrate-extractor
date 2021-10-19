@@ -67,8 +67,10 @@ class ComRate::Extractor::Essentials {
 
         if $frag-dir.IO.is-absolute {
             $path = IO::Path.new( $frag-dir );
+        } elsif %.conf<main><dir><base> {
+            $path = IO::Path.new(%.conf<main><dir><base>.Str).add($frag-dir);
         } else {
-            $path = IO::Path.new( %.conf<main><dir><base>.Str ).add( $frag-dir );
+            $path = $*CWD.parent.add($dirname);
         }
 
         for @frags -> $frag {
