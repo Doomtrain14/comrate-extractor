@@ -21,10 +21,8 @@ method load {
 
 	if $ext eq 'xlsx' {
 
-		my $ddir = self.ess.conf<main><dir><data> // 'data';
-#		say $ddir; die;
+		my $ddir = self.ess.conf<main><dir><data>;
 		my $path = self.ess.path( $ddir, $!filename );
-#		my $path = self.ess.path( 'data', $!filename );
 		my $parser = Spreadsheet::ParseXLSX.new;
         say "path: " ~ $path.absolute;
         $!xlsx = $parser.parse( $path.absolute );
