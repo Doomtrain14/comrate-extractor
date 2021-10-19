@@ -8,33 +8,344 @@ income:
                 - gross margin
                 - sales profit
             expected_sign: "+"
+            collect: true
 
         sales revenue:
             synonyms:
                 - sales revenue
                 - revenue
+                - total revenue
             expected_sign: "+"
+            collect: true
+
+        cost of revenue:
+            synonyms:
+                - cost of revenue
+                - cost of sales
+                - cost of goods sold
+            expected_sign: "-"
+            collect: true
+
+        operating revenue:
+            synonyms:
+                - operating revenue
+                - operating income
+            expected_sign: "+"
+            collect: false
+
+        non-operating revenue:
+            synonyms:
+                - non-operating revenue
+                - non-operating income
+            expected_sign: "+"
+            collect: true
+
+        operating expense:
+            synonyms:
+                - operating expense
+                - operating expenses
+            expected_sign: "-"
+            collect: false
+
+        selling general and administrative expenses:
+            synonyms:
+                - selling general and administrative expenses
+                - selling general and administration expenses
+                - selling general and admin expenses
+                - sales general and administrative expenses
+                - sales general and administration expenses
+                - sales general and admin expenses
+                - selling general & administrative expenses
+                - selling general & administration expenses
+                - selling general & admin expenses
+                - sales general & administrative expenses
+                - sales general & administration expenses
+                - sales general & admin expenses
+            expected sign: "-"
+            collect: true
+
+        research and development:
+            synonyms:
+                - research and development
+                - research & development
+                - R & D
+                - R&D
+            expected_sign: "-"
+            collect: false
+
+        total expense:
+            synonyms:
+                - total expense
+                - total expenses
+            expected_sign: "-"
+            collect: false
+
+        operating income:
+            synonyms:
+                - operating income
+                - operating revenue
+            expected_sign: "+"
+            collect: false
+
+        EBIT:
+            synonyms:
+                - EBIT
+                - earnings before interest and taxes
+                - earnings before interest & taxes
+                - operating earnings
+                - operating profit
+                - operating profit (EBIT)
+                - profit before interest and taxes
+                - profit before interest & taxes
+            expected_sign: "+"
+            collect: true
+
+        net non-operating income (expense):
+            synonyms:
+                - net non-operating income (expense)
+                - net non-operating income
+            expected_sign: "+"
+            collect: false
+
+        net other income (expense):
+            synonyms:
+                - net other income (expense)
+                - net other income
+            expected_sign: "+"
+            collect: false
+
+        EBITDA:
+            synonyms:
+                - EBITDA
+                - earnings before interest taxes depreciation and amortisation
+                - earnings before interest taxes depreciation & amortisation
+                - earnings before interest taxes depreciation and amortization
+                - earnings before interest taxes depreciation & amortization
+            expected_sign: "+"
+            collect: false
+
+        depreciation and amortisation:
+            synonyms:
+                - depreciation and amortisation
+                - depreciation & amortisation
+                - depreciation and amortization
+                - depreciation & amortization
+            expected_sign: "-"
+            collect: false
+
+        depreciation:
+            synonyms:
+                - depreciation
+            expected_sign: "-"
+            collect: false
+
+
+        amortisation:
+            synonyms:
+                - amortisation
+                - amortization
+            expected_sign: "-"
+            collect: false
+
+        non-operating expenses:
+            synonyms:
+                - non-operating expenses
+                - non-operating expense
+            expected_sign: "-"
+            collect: false
+
+        interest expense:
+            synonyms:
+                - interest expense
+                - interest expenses
+            expected_sign: "-"
+            collect: true
+
+        interest income:
+            synonyms:
+                - interest income
+                - interest revenue
+            expected_sign: "+"
+            collect: false
+
+        other income:
+            synonyms:
+                - other income
+                - other revenue
+            expected_sign: "+"
+            collect: false
+
+
+        other expense:
+            synonyms:
+                - other expense
+                - other expenses
+            expected_sign: "-"
+            collect: false
+
+        total unusual items:
+            synonyms:
+                - total unusual items
+                - net unusual items
+            expected_sign: "+"
+            collect: false
+
+        unusual income:
+            synonyms:
+                - unusual income
+                - unusual revenue
+            expected_sign: "+"
+            collect: false
+
+        unusual expense:
+            synonyms:
+                - unusual expense
+                - unusual expenses
+            expected_sign: "-"
+            collect: true
+
+        pretax income:
+            synonyms:
+                - pretax income
+                - earnings before tax
+                - EBT
+            expected_sign: "+"
+            collect: true
+
+        tax provision:
+            synonyms:
+                - tax provision
+                - tax
+                - taxes
+                - income tax expense
+                - tax expense
+            expected_sign: "-"
+            collect: false
+
+        net income:
+            synonyms:
+                - net income
+                - net income (loss)
+            expected_sign: "+"
+            collect: true
 
 
 
-    relationships:
+
+# "expected_sign" is whether or not we would expect the quantity
+# to be positive or negative. E.g. we expect an "expense" to
+# be negative. The reason for inclusion is because sometimes
+# financial statements will list an expense positively, but take
+# the value away when summing to get net value, and sometimes
+# it will be listed negatively and then added. (NB I think we will
+# not use "expected_sign" in our initial test cases as we will
+# list them all negatively
+#
+# The "collect" setting defines whether this is a parameter we need
+# to output at the end (ie. currently the 8 params for Income,
+# 14 for Cashflow and 23 for Balance)
+
+    equations:
         gross profit:
             components:
                 - sales revenue
                 - cost of revenue
-            rel_type:
-                bound
+            eqn_type: bound
 
         sales revenue:
             components:
                 - operating revenue
                 - non-operating revenue
-            rel_type:
-                bound
+            eqn_type: bound
 
         operating expenses:
             components:
                 - selling general and administrative expenses
                 - research and development
-            rel_type:
-                unbound
+            eqn_type: unbound
+
+        total expenses:
+            components:
+                - cost of revenue
+                - operating expenses
+                - non-operating expenses
+            eqn_type: bound
+
+        operating income:
+            components:
+                - gross profit
+                - operating expenses
+            eqn_type: bound
+
+        EBIT:
+            components:
+                - operating income
+                - net non-operating income (expense)
+                - net other income (expense)
+            eqn_type: bound
+
+        EBITDA:
+            components:
+                - EBIT
+                - depreciation and amortisation
+            eqn_type: bound
+
+        depreciation and amortisation:
+            components:
+                - depreciation
+                - amortisation
+
+        non-operating expense:
+            components:
+                - interest expense
+            eqn_type: unbound
+
+        non-operating income:
+            components:
+                - interest income
+            eqn_type: unbound
+
+        net non-operating income (expense):
+            components:
+                - non-operating income
+                - non-operating expense
+            eqn_type: bound
+
+        net other income (expense):
+            components:
+                - other income
+                - other expense
+            eqn_type: bound
+
+        total unusual items:
+            components:
+                - unusual income
+                - unusual expense
+            eqn_type: bound
+
+        pretax income:
+            components:
+                - operating income
+                - net non-operating income (expense)
+                - net other income (expense)
+            eqn_type: bound
+
+        net income:
+            components:
+                - pretax income
+                - tax provision
+            eqn_type: bound
+
+# "equations" are defined in terms of the total field. ie
+# financial statement equations are always in the format
+#
+#  <total param> = <component1> + <component2>
+#
+#  e.g. gross_profit = sales revenue + cost of revenue
+#
+# An "unbound" equation type means there may be other unlisted
+# components. For example
+#
+# operating expenses = selling general and admin expenses + research and development + (other stuff, could be anything)
+#
+#
