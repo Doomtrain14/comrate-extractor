@@ -23,7 +23,6 @@ method load {
 
 		my $path = self.ess.path( 'data', $!filename );
 		my $parser = Spreadsheet::ParseXLSX.new;
-        say "path: " ~ $path.absolute;
         $!xlsx = $parser.parse( $path.absolute );
 
 	} else {

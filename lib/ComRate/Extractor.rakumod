@@ -4,8 +4,9 @@ use ComRate::Extractor::Essentials;
 use ComRate::Extractor::Workbook;
 use ComRate::Extractor::Worksheet;
 use ComRate::Extractor::Identifier_Sheet;
-use ComRate::Extractor::Identifier_Param;
 use ComRate::Extractor::Identifier_Structure;
+use ComRate::Extractor::Identifier_Param;
+
 
 use Data::Dump;
 
@@ -43,6 +44,7 @@ method extract {
         #say "structure: " ~ Dump( $structure_idr.structure );
         my $param_idr = ComRate::Extractor::Identifier_Param.new:
             :$.ess,
+            :$sheet_name,
             structure => $structure_idr.structure,
             key_fields => $structure_idr.key_fields;
         $param_idr.identify;

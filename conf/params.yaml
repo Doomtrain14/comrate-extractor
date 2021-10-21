@@ -346,3 +346,893 @@ income:
 # operating expenses = selling general and admin expenses + research and development + (other stuff, could be anything)
 #
 #
+
+balance:
+    params:
+        total assets:
+            synonyms:
+                - total assets
+            expected_sign: "+"
+            collect: true
+
+        total current assets:
+            synonyms:
+                - current assets
+                - total current assets
+            expected_sign: "+"
+            collect: true
+
+        cash cash equivalents and short term investments:
+            synonyms:
+                - cash cash equivalents and short term investments
+            expected_sign: "+"
+            collect: false
+
+        cash and cash equivalents:
+            synonyms:
+                - cash and cash equivalents
+            expected_sign: "+"
+            collect: false
+
+        cash:
+            synonyms:
+                - cash
+            expected_sign: "+"
+            collect: true
+
+        cash equivalents:
+            synonyms:
+                - cash equivalents
+            expected_sign: "+"
+            collect: false
+
+        short term investments:
+            synonyms:
+                - short term investments
+            expected_sign: "+"
+            collect: false
+
+        receivables:
+            synonyms:
+                - receivables
+            expected_sign: "+"
+            collect: false
+
+        accounts receivable:
+            synonyms:
+                - accounts receivable
+            expected_sign: "+"
+            collect: true
+
+        gross accounts receivable:
+            synonyms:
+                - gross accounts receivable
+            expected_sign: "+"
+            collect: false
+
+        allowance for doubtful accounts receivable:
+            synonyms:
+                - allowance for doubtful accounts receivable
+            expected_sign: "+"
+            collect: false
+
+        loans receivable:
+            synonyms:
+                - loans receivable
+            expected_sign: "+"
+            collect: false
+
+        notes receivable:
+            synonyms:
+                - notes receivable
+            expected_sign: "+"
+            collect: false
+
+        accrued interest receivable:
+            synonyms:
+                - accrued interest receivable
+            expected_sign: "+"
+            collect: false
+
+        taxes receivable:
+            synonyms:
+                - taxes receivable
+            expected_sign: "+"
+            collect: false
+
+        due from related parties current:
+            synonyms:
+                - due from related parties current
+            expected_sign: "+"
+            collect: false
+
+        other receivables:
+            synonyms:
+                - other receivables
+            expected_sign: "+"
+            collect: false
+
+        receivables adjustments allowances:
+            synonyms:
+                - receivables adjustments allowances
+            expected_sign: "+"
+            collect: false
+
+        inventory:
+            synonyms:
+                - inventory
+            expected_sign: "+"
+            collect: true
+
+        raw materials:
+            synonyms:
+                - raw materials
+            expected_sign: "+"
+            collect: false
+
+        work in process:
+            synonyms:
+                - work in process
+            expected_sign: "+"
+            collect: false
+
+        finished goods:
+            synonyms:
+                - finished goods
+            expected_sign: "+"
+            collect: false
+
+        other inventories:
+            synonyms:
+                - other inventories
+            expected_sign: "+"
+            collect: false
+
+        inventories adjustments allowances:
+            synonyms:
+                - inventories adjustments allowances
+            expected_sign: "+"
+            collect: false
+
+        prepaid assets:
+            synonyms:
+                - prepaid assets
+            expected_sign: "+"
+            collect: false
+
+        prepaid expenses:
+            synonyms:
+                - prepaid expenses
+            expected_sign: "-"
+            collect: true
+
+        restricted cash:
+            synonyms:
+                - restricted cash
+            expected_sign: "+"
+            collect: false
+
+        current deferred assets:
+            synonyms:
+                - current deferred assets
+            expected_sign: "+"
+            collect: false
+
+        current deferred taxes assets:
+            synonyms:
+                - current deferred taxes assets
+            expected_sign: "+"
+            collect: false
+
+        assets held for sale current:
+            synonyms:
+                - assets held for sale current
+            expected_sign: "+"
+            collect: false
+
+        hedging assets current:
+            synonyms:
+                - hedging assets current
+            expected_sign: "+"
+            collect: false
+
+        other current assets:
+            synonyms:
+                - other current assets
+            expected_sign: "+"
+            collect: false
+
+        total other assets:
+            synonyms:
+                - total other assets
+            expected_sign: "+"
+            collect: true
+
+        total non current assets:
+            synonyms:
+                - total non current assets
+            expected_sign: "+"
+            collect: false
+
+        property plant and equipment:
+            synonyms:
+                - net ppe
+                - net property plant and equipment
+                - property plant and equipment (net)
+                - property plant and equipment
+            expected_sign: "+"
+            collect: true
+
+        gross ppe:
+            synonyms:
+                - gross ppe
+                - gross property plant and equipment
+                - property plant and equipment (gross)
+            expected_sign: "+"
+            collect: false
+
+        properties:
+            synonyms:
+                - properties
+            expected_sign: "+"
+            collect: false
+
+        land and improvements:
+            synonyms:
+                - land and improvements
+            expected_sign: "+"
+            collect: false
+
+        buildings and improvements:
+            synonyms:
+                - buildings and improvements
+            expected_sign: "+"
+            collect: false
+
+        machinery furniture equipment:
+            synonyms:
+                - machinery furniture equipment
+            expected_sign: "+"
+            collect: false
+
+        other properties:
+            synonyms:
+                - other properties
+            expected_sign: "+"
+            collect: false
+
+        construction in progress:
+            synonyms:
+                - construction in progress
+            expected_sign: "+"
+            collect: false
+
+        leases:
+            synonyms:
+                - leases
+            expected_sign: "+"
+            collect: false
+
+        accumulated depreciation:
+            synonyms:
+                - accumulated depreciation
+            expected_sign: "+"
+            collect: true
+
+        intangible assets:
+            synonyms:
+                - goodwill and other intangible assets
+                - intangible assets
+            expected_sign: "+"
+            collect: true
+
+        goodwill:
+            synonyms:
+                - goodwill
+            expected_sign: "+"
+            collect: false
+
+        other intangible assets:
+            synonyms:
+                - other intangible assets
+            expected_sign: "+"
+            collect: false
+
+        investment properties:
+            synonyms:
+                - investment properties
+            expected_sign: "+"
+            collect: false
+
+        investments and advances:
+            synonyms:
+                - investments and advances
+            expected_sign: "+"
+            collect: false
+
+        long term equity investment:
+            synonyms:
+                - long term equity investment
+            expected_sign: "+"
+            collect: false
+
+        investments in subsidiaries at cost:
+            synonyms:
+                - investments in subsidiaries at cost
+            expected_sign: "+"
+            collect: false
+        investments in associates at cost:
+            synonyms:
+                - investments in associates at cost
+            expected_sign: "+"
+            collect: false
+
+        investments in other ventures under equity method:
+            synonyms:
+                - investments in other ventures under equity method
+            expected_sign: "+"
+            collect: false
+
+        investments in joint ventures at cost:
+            synonyms:
+                - investments in joint ventures at cost
+            expected_sign: "+"
+            collect: false
+
+        investmentin financial assets:
+            synonyms:
+                - investment in financial assets
+            expected_sign: "+"
+            collect: false
+
+        trading securities:
+            synonyms:
+                - trading securities
+            expected_sign: "+"
+            collect: false
+
+        financial assets designated as fair value through profit or loss total:
+            synonyms:
+                - financial assets designated as fair value through profit or loss total
+            expected_sign: "+"
+            collect: false
+
+        available for sale securities:
+            synonyms:
+                - available for sale securities
+            expected_sign: "+"
+            collect: false
+
+        held to maturity securities:
+            synonyms:
+                - held to maturity securities
+            expected_sign: "+"
+            collect: false
+
+        other investments:
+            synonyms:
+                - other investments
+            expected_sign: "+"
+            collect: false
+
+        financial assets:
+            synonyms:
+                - financial assets
+            expected_sign: "+"
+            collect: false
+
+        non current accounts receivable:
+            synonyms:
+                - non current accounts receivable
+            expected_sign: "+"
+            collect: false
+
+        non current note receivables:
+            synonyms:
+                - non current note receivables
+            expected_sign: "+"
+            collect: false
+
+        due from related parties non current:
+            synonyms:
+                - due from related parties non current
+            expected_sign: "+"
+            collect: false
+
+        non current deferred assets:
+            synonyms:
+                - non current deferred assets
+            expected_sign: "+"
+            collect: false
+
+        non current deferred taxes assets:
+            synonyms:
+                - non current deferred taxes assets
+            expected_sign: "+"
+            collect: false
+
+        non current prepaid assets:
+            synonyms:
+                - non current prepaid assets
+            expected_sign: "+"
+            collect: false
+
+        defined pension benefit:
+            synonyms:
+                - defined pension benefit
+            expected_sign: "+"
+            collect: false
+
+        other non current assets:
+            synonyms:
+                - other non current assets
+            expected_sign: "+"
+            collect: false
+
+        total liabilities net minority interest:
+            synonyms:
+                - total liabilities net minority interest
+            expected_sign: "-"
+            collect: false
+
+        total liabilities and shareholders equity:
+            synonyms:
+                - total liabilities and shareholders equity
+                - total liabliities and stockholders equity
+                - total liabilities & shareholders equity
+                - total liabliities & stockholders equity
+            expected_sign: "+"
+            collect: true
+
+        total current liabilities:
+            synonyms:
+                - current liabilities
+                - total current liabilities
+            expected_sign: "-"
+            collect: true
+
+        accrued expenses payable:
+            synonyms:
+                - payables and accrued expenses
+                - accrued expenses payable
+            expected_sign: "-"
+            collect: true
+
+        payables:
+            synonyms:
+                - payables
+            expected_sign: "-"
+            collect: false
+
+        accounts payable:
+            synonyms:
+                - accounts payable
+            expected_sign: "-"
+            collect: true
+
+        total tax payable:
+            synonyms:
+                - total tax payable
+            expected_sign: "-"
+            collect: false
+
+        income tax payable:
+            synonyms:
+                - income tax payable
+            expected_sign: "-"
+            collect: false
+
+        dividends payable:
+            synonyms:
+                - dividends payable
+            expected_sign: "-"
+            collect: false
+
+        due to related parties current:
+            synonyms:
+                - due to related parties current
+            expected_sign: "-"
+            collect: false
+
+        other payable:
+            synonyms:
+                - other payable
+            expected_sign: "-"
+            collect: false
+
+        current accrued expenses:
+            synonyms:
+                - current accrued expenses
+            expected_sign: "-"
+            collect: false
+
+        interest payable:
+            synonyms:
+                - interest payable
+            expected_sign: "-"
+            collect: false
+
+        current provisions:
+            synonyms:
+                - current provisions
+            expected_sign: "-"
+            collect: false
+
+        pension and other post retirement benefit plans current:
+            synonyms:
+                - pension and other post retirement benefit plans current
+            expected_sign: "-"
+            collect: false
+
+        current debt and capital lease obligation:
+            synonyms:
+                - current debt and capital lease obligation
+            expected_sign: "-"
+            collect: false
+
+        current debt:
+            synonyms:
+                - current debt
+            expected_sign: "-"
+            collect: false
+
+        short term notes payable:
+            synonyms:
+                - current notes payable
+                - short term notes payable
+            expected_sign: "-"
+            collect: true
+
+        long term notes payable:
+            synonyms:
+                - long term notes payable
+                - non-current notes payable
+            expected sign: "-"
+            collect: true
+
+        commercial paper:
+            synonyms:
+                - commercial paper
+            expected_sign: "-"
+            collect: false
+
+        line of credit:
+            synonyms:
+                - line of credit
+            expected_sign: "-"
+            collect: false
+
+        other current borrowings:
+            synonyms:
+                - other current borrowings
+            expected_sign: "-"
+            collect: false
+
+        current capital lease obligation:
+            synonyms:
+                - current capital lease obligation
+            expected_sign: "-"
+            collect: false
+
+        current deferred liabilities:
+            synonyms:
+                - current deferred liabilities
+            expected_sign: "-"
+            collect: false
+
+        current deferred taxes liabilities:
+            synonyms:
+                - current deferred taxes liabilities
+            expected_sign: "+"
+            collect: false
+
+        current deferred revenue:
+            synonyms:
+                - current deferred revenue
+            expected_sign: "-"
+            collect: false
+
+        other short term liabilities:
+            synonyms:
+                - other current liabilities
+                - other short term liabilities
+            expected_sign: "-"
+            collect: true
+
+        total long term liabilities:
+            synonyms:
+                - total non current liabilities
+                - total long term liabilities
+            expected_sign: "-"
+            collect: true
+
+        long term provisions:
+            synonyms:
+                - long term provisions
+            expected_sign: "+"
+            collect: false
+
+        long term debt and capital lease obligation:
+            synonyms:
+                - long term debt and capital lease obligation
+            expected_sign: "-"
+            collect: false
+
+        long term debt:
+            synonyms:
+                - long term debt
+            expected_sign: "-"
+            collect: false
+
+        long term capital lease obligation:
+            synonyms:
+                - long term capital lease obligation
+            expected_sign: "-"
+            collect: false
+
+        non current deferred liabilities:
+            synonyms:
+                - non current deferred liabilities
+            expected_sign: "-"
+            collect: false
+
+        non current deferred taxes liabilities:
+            synonyms:
+                - non current deferred taxes liabilities
+            expected_sign: "-"
+            collect: false
+        non current deferred revenue:
+            synonyms:
+                - non current deferred revenue
+            expected_sign: "+"
+            collect: false
+
+        trade and other payables non current:
+            synonyms:
+                - tradeand other payables non current
+            expected_sign: "-"
+            collect: false
+
+        due to related parties non current:
+            synonyms:
+                - due to related parties non current
+            expected_sign: "-"
+            collect: false
+
+        non current accrued expenses:
+            synonyms:
+                - non current accrued expenses
+            expected_sign: "-"
+            collect: false
+
+        employee benefits:
+            synonyms:
+                - employee benefits
+            expected_sign: "-"
+            collect: false
+
+        non current pension and other post retirement benefit plans:
+            synonyms:
+                - non current pension and other post retirement benefit plans
+            expected_sign: "-"
+            collect: false
+
+        derivative product liabilities:
+            synonyms:
+                - derivative product liabilities
+            expected_sign: "-"
+            collect: false
+
+        preferred securities outside stock equity:
+            synonyms:
+                - preferred securities outside stock equity
+            expected_sign: "+"
+            collect: false
+
+        restricted common stock:
+            synonyms:
+                - restricted common stock
+            expected_sign: "+"
+            collect: false
+
+        liabilities held for sale non current:
+            synonyms:
+                - liabilities held for sale non current
+            expected_sign: "-"
+            collect: false
+
+        other long term liabilities:
+            synonyms:
+                - other non current liabilities
+                - other long term liabilities
+            expected_sign: "-"
+            collect: true
+
+        total equity gross minority interest:
+            synonyms:
+                - total equity gross minority interest
+            expected_sign: "-"
+            collect: false
+
+        stockholders equity:
+            synonyms:
+                - stockholders equity
+                - shareholders equity
+                - total shareholders equity
+                - total stockholders equity
+            expected_sign: "+"
+            collect: true
+
+        capital stock:
+            synonyms:
+                - capital stock
+            expected_sign: "+"
+            collect: true
+
+        preferred stock:
+            synonyms:
+                - preferred stock
+            expected_sign: "+"
+            collect: false
+
+        common stock:
+            synonyms:
+                - common stock
+            expected_sign: "+"
+            collect: false
+
+        other capital stock:
+            synonyms:
+                - other capital stock
+            expected_sign: "+"
+            collect: false
+
+        additional paid in capital:
+            synonyms:
+                - additional paid in capital
+            expected_sign: "+"
+            collect: false
+
+        retained earnings:
+            synonyms:
+                - retained earnings
+                - retained earnings (deficit)
+            expected_sign: "+"
+            collect: true
+
+        treasury stock:
+            synonyms:
+                - treasury stock
+            expected_sign: "+"
+            collect: false
+
+        gains losses not affecting retained earnings:
+            synonyms:
+                - gains losses not affecting retained earnings
+            expected_sign: "+"
+            collect: false
+
+        unrealized gain loss:
+            synonyms:
+                - unrealized gain loss
+            expected_sign: "+"
+            collect: false
+
+        minimum pension liabilities:
+            synonyms:
+                - minimum pension liabilities
+            expected_sign: "+"
+            collect: false
+
+        foreign currency translation adjustments:
+            synonyms:
+                - foreign currency translation adjustments
+            expected_sign: "+"
+            collect: false
+
+        fixed assets revaluation reserve:
+            synonyms:
+                - fixed assets revaluation reserve
+            expected_sign: "+"
+            collect: false
+
+        other equity adjustments:
+            synonyms:
+                - other equity adjustments
+            expected_sign: "+"
+            collect: false
+
+        other equity interest:
+            synonyms:
+                - other equity interest
+            expected_sign: "+"
+            collect: false
+
+        minority interest:
+            synonyms:
+                - minority interest
+            expected_sign: "+"
+            collect: false
+
+        total capitalization:
+            synonyms:
+                - total capitalization
+            expected_sign: "+"
+            collect: false
+
+        preferred stock equity:
+            synonyms:
+                - preferred stock equity
+            expected_sign: "+"
+            collect: false
+
+        common stock equity:
+            synonyms:
+                - common stock equity
+            expected_sign: "+"
+            collect: false
+
+        capital lease obligations:
+            synonyms:
+                - capital lease obligations
+            expected_sign: "+"
+            collect: false
+
+        net fixed assets:
+            synonyms:
+                - net tangible assets
+                - net fixed assets
+            expected_sign: "+"
+            collect: true
+
+        working capital:
+            synonyms:
+                - working capital
+            expected_sign: "+"
+            collect: false
+
+        invested capital:
+            synonyms:
+                - invested capital
+            expected_sign: "+"
+            collect: false
+
+        tangible book value:
+            synonyms:
+                - tangible book value
+            expected_sign: "+"
+            collect: false
+
+        total debt:
+            synonyms:
+                - total debt
+            expected_sign: "-"
+            collect: false
+
+        net debt:
+            synonyms:
+                - net debt
+            expected_sign: "-"
+            collect: false
+
+        share issued:
+            synonyms:
+                - share issued
+            expected_sign: "+"
+            collect: false
+
+        ordinary shares number:
+            synonyms:
+                - ordinary shares number
+            expected_sign: "+"
+            collect: false
+
+        preferred shares number:
+            synonyms:
+                - preferred shares number
+            expected_sign: "+"
+            collect: false
+
+        treasury shares number:
+            synonyms:
+                - treasury shares number

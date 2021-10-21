@@ -1,49 +1,10 @@
 use v6;
 use ComRate::Extractor::Identifier;
+use ComRate::Extractor::Scorecard_Param;
 use Data::Dump;
 constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
-
-# %.relationships and %.params below should be moved to conf/params.yaml
-
-has %.equations = (
-    income => {
-        'gross profit' => [ 'sales revenue', 'cost of revenue' ],
-        'sales revenue' => [ 'operating income', 'non-operating income' ],
-        'operating expenses' => [ 'selling general and administrative expenses', 'research and development' ],
-        'total expenses' => [ 'cost of revenue', 'operating expenses', 'non-operating expenses' ],
-        'operating income' => [ 'gross profit', 'operating expenses' ],
-        'EBIT' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
-        'EBITDA' => [ 'EBIT', 'depreciation and amortisation' ],
-        'depreciation and amortisation' => [ 'depreciation', 'amortisation' ],
-        'non-operating expenses' => [ 'interest expense' ],
-        'non-operating income' => [ 'interest income' ],
-        'net non-operating income (expense)' => [ 'non-operating income', 'non-operating expense' ],
-        'net other income (expense)' => [ 'other income', 'other expense' ],
-        'total unusual items' => [ 'unusual income', 'unusual expense' ],
-        'pretax income' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
-        #'net income' => [ 'pretax income', 'tax provision' ]
-    }
-);
-
-
-
-
-has %.params = (
-    'income' => {
-        'gross profit' => [ 'gross margin', 'gross income', 'sales profit' ],
-        'selling general and administrative expenses' => [
-            'selling general and administration expenses',
-            'sales general and administration expenses',
-            # ...
-        ],
-        'sales revenue' => [ 'revenue' ],
-        'cost of revenue' => [ 'cost of goods sold', 'cost of sales' ],
-        'operating revenu' => [ 'operating income' ],
-        'net income' => [ 'net earnings' ]
-    }
-);
 
 has Str $.sheet_name is rw; # 'balance', 'cashflow', 'income'
 has %.structure is rw;
@@ -193,7 +154,7 @@ method identify {
             param_inf => {}
         );
 
-        for $.ess.conf<params><income><params>.kv -> $param, %param_inf {
+        for $.ess.conf<params>{ $.sheet_name }<params>.kv -> $param, %param_inf {
 
             #my $score = 0;
             #for |%param_inf<synonyms> -> $synonym {

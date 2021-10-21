@@ -2,91 +2,72 @@
 
 use v6;
 use Test;
-use Comrate::Extractor::Essentials;
-use Comrate::Extractor::Workbook;
-use Comrate::Extractor;
-use Comrate::Extractor::Identifier_Sheet;
+use ComRate::Extractor::Essentials;
+use ComRate::Extractor::Workbook;
+use ComRate::Extractor;
+use ComRate::Extractor::Identifier_Sheet;
 
-my $filename = 'AAPL-income.xlsx';
 my $ess = ComRate::Extractor::Essentials.new;
+
+my $filename = 'Annual_IncomeStatement_AAPL.xlsx';
 my $workbook = ComRate::Extractor::Workbook.new(:$ess,:$filename);
 my $xr = ComRate::Extractor.new(:$ess,:$workbook);
 
-$xr.extract;
+my $results = $xr.extract;
 
 # test final output:
 
-is-deeply $xr.results, {
+is-deeply $results, {
     income => {
-        "sales revenue" => 233_715,
-        "cost of goods sold" => 128_832,
-        "gross profit" => 93_626,
-        "sales general and admin expenses" => -14_329,
-        "operating profit (EBIT)" => 73_248,
-        "non-operating income" => Nil,
-        "unusual expenses" => 0,
-        "interest expense" => -733,
-        "earnings before tax" => 72_515,
-        "income tax expense" => 19_121,
-        "net income" => 53394
+        "EBIT"                                        => "69964",
+        "cost of revenue"                             => "-169559",
+        "gross profit"                                => "104956",
+        "interest expense"                            => "-2873",
+        "net income"                                  => "57411",
+        "pretax income"                               => "67091",
+        "selling general and administrative expenses" => "-19916",
+      },
+}, "Overall results - Income";
+
+
+$filename = 'Annual_BalanceSheet_AAPL.xlsx';
+$workbook = ComRate::Extractor::Workbook.new(:$ess,:$filename);
+$xr = ComRate::Extractor.new(:$ess,:$workbook);
+$results = $xr.extract;
+
+is-deeply $results, {
+    balance => {
+        "accounts payable"             => "42296",
+        "accounts receivable"          => "16120",
+        "accrued expenses payable"     => "42296",
+        "accumulated depreciation"     => "-66760",
+        "capital stock"                => "65745",
+        "cash"                         => "17773",
+        "intangible assets"            => "-",
+        "inventory"                    => "4061",
+        "other long term liabilities"  => "26320",
+        "other short term liabilities" => "42684",
+        "property plant and equipment" => "36766",
+        "retained earnings"            => "14966",
+        "stockholders equity"          => "65339",
+        "total assets"                 => "323888",
+        "total current assets"         => "143713",
+        "total current liabilities"    => "105392",
+        "total long term liabilities"  => "153157",
     }
-}, "Overall results";
+}, "Overall results - Balance";
 
 my $sheets = $xr.workbook.sheets;
-my $sections = $sheets[0].sections;
-
-# We should check "sections" have been correctly identified
-# in the worksheet. NB. "as_hash" is just hypothetical, a
-# "section" will be an object and we can test the output
-# values in whatever way is convenient
-
-is-deeply $sections[0].as_hash, {
-    title => Nil,
-    data => [{
-        name => "Operating Revenue",
-        value => 233_715,
-    }, {
-        name => "Adjustments to Revenue",
-        value => "N/A"
-    }, {
-       name => "Cost of Revenue",
-       value => 128_832
-    }],
-    total => {
-        name => "Gross Operating Profit"
-        value => 93_626
-    }
-}, "first section";
-
-# We should check structure has been
-# identified correctly - ie which sections
-# are contained within which sections. (
-# as_hash hypothetical again)
-
-my $structure = $sheets[0].structure;
-is-deeply $structure[0].as_hash, {
-    7 => {
-        6 => [0,1,2,3,4,5]
-    }
-}, "Worksheet structure";
-
-# We will need other intermediate output tests
-
-# We should also have tests for correct identification
-# of worksheets (functionality already exists to
-# do this via simply looking at the worksheet name).
-#
-# We expect the input workbook to have income, cashflow
-# and balance statements - ie 3 worksheets. However,
-# we should accept less than 3, in which case we best
-# guess which 1 or 2 out of the 3 they are - or more
-# than 3 - in which case we best guess which are the correct
-# 3. (Again, this is already done based on worksheet name)
 
 $filename = 'BS_PL_Summary.xlsx';
 $workbook = ComRate::Extractor::Workbook.new(:$ess,:$filename);
-my $idr = Comrate::Extractor::Identifier_Sheet.new( :$ess,
-    to_identify => $workbook.sheets
+$workbook.load;
+$workbook.get_sheets;
+say "sheets: " ~ $workbook.sheets.elems;
+my $idr = ComRate::Extractor::Identifier_Sheet.new(
+    :$ess,
+    to_identify => $workbook.sheets,
+    options => ['income','balance','cashflow']
 );
 
 $idr.identify;
@@ -95,3 +76,6 @@ is-deeply $idr.identified, {
     balance => 2,
     income => 8
 }, "Worksheet identification";
+
+
+done-testing;
