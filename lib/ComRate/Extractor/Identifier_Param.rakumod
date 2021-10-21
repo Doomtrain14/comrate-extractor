@@ -46,11 +46,14 @@ has %.params = (
 );
 
 has Str $.sheet_name is rw; # 'balance', 'cashflow', 'income'
-has @.to_identify is rw; # these will be the structure rows determined by Identifier_Structure
+has %.structure is rw;
 has @.exp_eqns is rw;
 
 has $.line_count is rw = 0;
 has %.cache is rw;
+
+has @.key_fields is rw;
+has %.collect is rw;
 
 method index{
 
@@ -176,46 +179,41 @@ method write_output( $param, @comps ){
 
 method identify {
 
+    die "identify called but key_fields not provide" unless @.key_fields;
+    die "identify called but structure not provided" unless %.structure;
 
-    # Algorithm as follows
-    #
-    # 1. loop over "spreadsheet" params (ie those on the actual spreadsheet)
-    # and compare with "database" params (ie those we have listed), record
-    # the best match and best score in each case.
-    #
-    # 2. if we encounter a 100% match then mark this field "identified" and
-    # drop into analysing the relationship.
-    #
-    # If this field is the total in a relationship, use "find_best_combo" on
-    # the components to identify the component fields. This will involve
-    # checking each equation on the sheet_param_rel database table that matches
-    # the parameter. (Should be a handful of possible equations)
-    #
-    # We should code in a "component matching cut-off" normalised score for the component
-    # matching, below which we decide the components are NOT identified.
-    # Initially we can set this to 0 (ie accept whatever best match), but
-    # can use it to experiment with
-    #
-    # We can skip equations that are "bound" and have MORE
-    # components than the spreadsheet equations (but not less, because the
-    # spreadsheet might just not show parameters that have zero value)
-    #
-    # FOR IMPLEMENTATION LATER (but consider it now)
-    # repeat this same process but considering the 100% identified param
-    # as a *component* in an equation. Loop over the spreadsheet equations
-    # it appears in and compare to database equations it appears in. Use
-    # match to identify the other components in the equation + the total param
-    #
-    # 3. Once we reach the end of the loop (over spreadsheet params) we know
-    # there are no 100% matches left. We also know the best match and best score
-    # for each unidentified param. Start with the unidentified param which has the
-    # best score, call it "identified", then repeat step 2. Continue picking the
-    # next best score, until this score is less than a chosen "param matching cut-off"
-    # At this point we decide we cannot identify any more spreadsheet parameters.
-    #
-    # 4. Final step: can we use the known equations to identify any missing
-    # parameters? Loop over the list of parameters we are trying to collect
-    # For any that are missing, is there an equation where all other parameters are
-    # identified? Then deduce the value.
+
+    my $sc = ComRate::Extractor::Scorecard_Param.new: :$.ess;
+
+    for @.key_fields.kv -> $i, %key_inf {
+
+        my %best = (
+            score => 0,
+            param => '',
+            param_inf => {}
+        );
+
+        for $.ess.conf<params><income><params>.kv -> $param, %param_inf {
+
+            #my $score = 0;
+            #for |%param_inf<synonyms> -> $synonym {
+        #        my $syn_score = $sc.py.call('__main__','compare',%key_inf<title>.lc,$synonym.lc);
+        #        $score = $syn_score if $syn_score > $score;
+        #    }
+            $sc.type = $param;
+            $sc.synonyms = |%param_inf<synonyms>;
+            $sc.input = %key_inf<title>;
+            my $score = $sc.evaluate;
+
+            %best = ( :$score, :$param, :%param_inf ) if $score > %best<score>;
+
+        }
+
+        #say "score: %best<score> --- key_field: {%key_inf<title>} param: %best<param>";
+
+        %.identified{ %best<param> } = %key_inf;
+        %.collect{ %best<param> } = %key_inf if %best<param_inf><collect>;
+
+    }
 
 }

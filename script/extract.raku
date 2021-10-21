@@ -5,6 +5,7 @@ use lib '../lib';
 use ComRate::Extractor;
 use ComRate::Extractor::Workbook;
 use ComRate::Extractor::Essentials;
+use Data::Dump;
 
 my $ess = ComRate::Extractor::Essentials.new;
 
@@ -14,14 +15,15 @@ sub MAIN ( Str :$filename ){
 		:$ess,
 		:$filename
 	);
-	
+
     my $xr = ComRate::Extractor.new(
 		:$ess,
         :$workbook
     );
-    
-    $xr.extract;
-    
+
+    my %results = $xr.extract;
+
+    say "results: " ~ Dump( %results );
     # ... Dump $xr->results as JSON
-    
+
 }

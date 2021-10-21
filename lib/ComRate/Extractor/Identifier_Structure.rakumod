@@ -33,10 +33,29 @@ method identify_row_types {
 
     for $.worksheet.min_row .. $.worksheet.max_row -> $row_num {
         my $row_type = self.identify_row_type( $row_num );
-        say "ROW $row_num: $row_type" if $row_type ne 'empty';
+        #say "ROW $row_num: $row_type" if $row_type ne 'empty';
         @.row_types.push: $row_type;
     }
 
+}
+
+
+method key_fields {
+
+    my @rows = $.worksheet.min_row ... $.worksheet.max_row;
+    my @kf;
+
+    for @rows.kv -> $i, $row_num {
+        next if @.row_types[ $i ] !~~ /[data||formula]/;
+        my $label = $.coord_to_cell_label( $row_num, $.key_col ),
+        @kf.push: {
+            label => $label,
+            title => $.worksheet.cell( $row_num, $.key_col ).value,
+            position => [ $row_num, $.key_col ]
+        };
+    }
+
+    return @kf;
 }
 
 
@@ -64,7 +83,7 @@ method identify_data_col {
 
     $.data_col = $data_col;
     $.last_year = $last_year;
-    say "data col: $data_col";
+    #say "data col: $data_col";
     return $data_col;
 }
 
@@ -88,7 +107,7 @@ method identify_header_row {
         if $row_type eq 'text' && ( ! $best_header_row_type || $best_header_row_type eq 'text' ) {
             for $.worksheet.min_col .. $.worksheet.max_col -> $col_num {
                 my $cell = $.worksheet.cell( $i, $col_num );
-                if $cell.value.Str ~~ / [^||\s] [19||20] \d\d [\s||$] / {
+                if $cell.value && $cell.value.Str ~~ / [^||\s] [19||20] \d\d [\s||$] / {
                     $best_header_row_type='text';
                     $col_header_row = $i;
                 }
@@ -140,7 +159,7 @@ method identify_row_type( Int $row_num ) {
         }
         if $row_type ne 'formula' and $cell.formula {
             $row_type = 'formula';
-            say "row $row_num formula " ~ $cell.formula;
+            #say "row $row_num formula " ~ $cell.formula;
         }
 
         %.row_type_sets{ $row_type } ||= [];
@@ -180,11 +199,9 @@ method identify_structure {
 
         my $formula = $.worksheet.cell( $i, $.data_col ).formula;
 
-        say "FORMULA: $formula";
-
         if $formula ~~ /SUM \( ( <-[\)]>+ ) \) / {
             my $contents = $0;
-            say "contents: $contents";
+            #say "contents: $contents";
             my @ranges = $contents.split: ',';
             for @ranges -> $range {
                 my @delims = $range.split: ':';
@@ -202,10 +219,10 @@ method identify_structure {
                     my ( $min_row, $min_col ) = $.cell_label_to_coord( @delims[0] );
                     my ( $max_row, $max_col ) = $.cell_label_to_coord( @delims[1] );
 
-                    say "min_row: " ~ $min_row;
-                    say "max_row: " ~ $max_row;
-                    say "min_col: " ~ $min_col;
-                    say "max_col: " ~ $max_col;
+                    #say "min_row: " ~ $min_row;
+                    #say "max_row: " ~ $max_row;
+                    #say "min_col: " ~ $min_col;
+                    #say "max_col: " ~ $max_col;
 
                     for $min_col..$max_col -> $col_num {
                         for $min_row..$max_row -> $row_num {
@@ -221,7 +238,7 @@ method identify_structure {
                 }
             }
         } elsif $formula ~~ / <[\+\-]> / {
-            say "+- formula: $formula";
+            #say "+- formula: $formula";
 
             my @labels = $formula.split: / <[\+\-]> /;
             for @labels -> $label {
@@ -240,7 +257,7 @@ method identify_structure {
 
         my $label = $.coord_to_cell_label( $i, $.data_col );
 
-        say "i: $i key_col: $.key_col";
+        #say "i: $i key_col: $.key_col";
         my $title = $.worksheet.cell( $i, $.key_col ).value.Str;
         %structure{ $label } = {
             title => $title,

@@ -29,14 +29,12 @@ income:
         operating revenue:
             synonyms:
                 - operating revenue
-                - operating income
             expected_sign: "+"
             collect: false
 
         non-operating revenue:
             synonyms:
                 - non-operating revenue
-                - non-operating income
             expected_sign: "+"
             collect: true
 
@@ -83,7 +81,6 @@ income:
         operating income:
             synonyms:
                 - operating income
-                - operating revenue
             expected_sign: "+"
             collect: false
 

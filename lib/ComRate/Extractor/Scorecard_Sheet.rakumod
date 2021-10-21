@@ -1,25 +1,39 @@
 use v6;
-use Inline::Python;
 use ComRate::Extractor::Scorecard;
+use Inline::Python;
 
-unit class ComRate::Extractor::Scorecard_Sheet is Comrate::Extractor::Scorecard;
+unit class ComRate::Extractor::Scorecard_Sheet is ComRate::Extractor::Scorecard;
 
-has Inline::Python $.py = sub{
-    my $py = Inline::Python.new;
-    $py.run(q:heredoc/PYTHON/);
-from fuzzywuzzy import process
-
-def score(input, *dictionary):
-    highest = process.extractOne(input,dictionary)
-    return highest[1]
-PYTHON
-
-    return $py;
-}();
+has %.synonyms = {
+    'balance' => [
+        'Balance Sheet',
+        'Balance Statement',
+        'Statement of Balance',
+        'Balance',
+        'BS'
+    ],
+    'cashflow' => [
+        'Cashflow Sheet',
+        'Cashflow Statement',
+        'Cashflow',
+        'CF'
+    ],
+    'income' => [
+        'Income Sheet',
+        'Income Statement',
+        'Statement of Income',
+        'Income',
+        'Profit and Loss Sheet',
+        'Profit and Loss Statement',
+        'Profit and Loss'
+    ]
+};
 
 
 method evaluate {
-    my $score = $!py.call('__main__','score',$.input.name,@.dictionary);
+    die "evaluate called but worksheet type not specified" unless $.type;
+    my @.dictionary = |%.synonyms{ $.type };
+    my $score = $.py.call('__main__','score',$.input.name,@.dictionary);
     $.score = $score;
     return $score;
 }
