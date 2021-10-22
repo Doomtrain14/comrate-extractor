@@ -6,6 +6,7 @@ constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
 
+<<<<<<< HEAD
 has Str $.sheet_name is rw; # 'balance', 'cashflow', 'income'
 has %.structure is rw;
 has @.exp_eqns is rw;
@@ -25,10 +26,32 @@ method index{
 
     for |%.equations<income>.kv -> $param, @comps {
         self.expand_comps( $param, @comps );
+=======
+# %.relationships and %.params below should be moved to conf/params.yaml
+
+has %.equations = (
+    income => {
+        'gross profit' => [ 'sales revenue', 'cost of revenue' ],
+        'sales revenue' => [ 'operating revenue', 'non-operating revenue' ],
+        'operating expenses' => [ 'selling general and administrative expenses', 'research and development'],
+        'total expenses' => [ 'cost of revenue', 'operating expenses', 'non-operating expenses' ],
+        'operating income' => [ 'gross profit', 'operating expenses' ],
+        'EBIT' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
+        'EBITDA' => [ 'EBIT', 'depreciation and amortisation' ],
+        'depreciation and amortisation' => [ 'depreciation', 'amortisation' ]
+        'non-operating expenses' => [ 'interest expense'],
+        'non-operating income' => [ 'interest income'],
+        'net non-operating income (expense)' => [ 'non-operating income', 'non-operating expense' ],
+        'net other income (expense)' => [ 'other income', 'other expense' ],
+        'total unusual items' => [ 'unusual income', 'unusual expense' ],
+        'pretax income' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
+        'net income' => [ 'pretax income', 'tax provision' ]
+>>>>>>> 5785939 (serialize params.yaml to db via Red (except equations num_comps))
     }
 
 }
 
+<<<<<<< HEAD
 
 
 method expand_comps( $param, @comps ) {
@@ -51,6 +74,19 @@ method expand_comps( $param, @comps ) {
                 self.expand_comps( $param, @comps_exp );
             }
         }
+=======
+has %.params = (
+    'income' => {
+        'gross profit' => [ 'gross margin', 'gross income', 'sales profit' ],
+        'selling general and administrative expenses' => [
+            'selling general and administration expenses',
+            'sales general and administration expenses',
+        ],
+        'sales revenue' => [ 'revenue' ],
+        'cost of revenue' => [ 'cost of goods sold', 'cost of sales' ],
+        'operating income' => [ 'operating revenue' ],
+        'net income' => [ 'net earnings' ]
+>>>>>>> 5785939 (serialize params.yaml to db via Red (except equations num_comps))
     }
 }
 
@@ -97,7 +133,7 @@ method write_output( $param, @comps ){
     # sheet_param_eqn_comp ("comp" = "component")
     #    id
     #    eqn_id
-    #    param__id
+    #    param_id
 
     # 1. the "index" method should create a fresh index from
     # the supplied param/relationship data - so tables should

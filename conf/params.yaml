@@ -57,7 +57,7 @@ income:
                 - sales general & administrative expenses
                 - sales general & administration expenses
                 - sales general & admin expenses
-            expected sign: "-"
+            expected_sign: "-"
             collect: true
 
         research and development:
