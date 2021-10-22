@@ -205,7 +205,7 @@ income:
             synonyms:
                 - pretax income
                 - earnings before tax
-                - EBT
+                - ebt
             expected_sign: "+"
             collect: true
 
@@ -230,17 +230,17 @@ income:
 
 
 # "expected_sign" is whether or not we would expect the quantity
-# to be positive or negative. E.g. we expect an "expense" to
-# be negative. The reason for inclusion is because sometimes
+# to be positive or negative. e.g. we expect an "expense" to
+# be negative. the reason for inclusion is because sometimes
 # financial statements will list an expense positively, but take
 # the value away when summing to get net value, and sometimes
-# it will be listed negatively and then added. (NB I think we will
+# it will be listed negatively and then added. (nb i think we will
 # not use "expected_sign" in our initial test cases as we will
 # list them all negatively
 #
-# The "collect" setting defines whether this is a parameter we need
-# to output at the end (ie. currently the 8 params for Income,
-# 14 for Cashflow and 23 for Balance)
+# the "collect" setting defines whether this is a parameter we need
+# to output at the end (ie. currently the 8 params for income,
+# 14 for cashflow and 23 for balance)
 
     equations:
         gross profit:
@@ -340,8 +340,8 @@ income:
 #
 #  e.g. gross_profit = sales revenue + cost of revenue
 #
-# An "unbound" equation type means there may be other unlisted
-# components. For example
+# an "unbound" equation type means there may be other unlisted
+# components. for example
 #
 # operating expenses = selling general and admin expenses + research and development + (other stuff, could be anything)
 #
@@ -1236,3 +1236,384 @@ balance:
         treasury shares number:
             synonyms:
                 - treasury shares number
+
+cashflow:
+    params:
+        operating cash flow:
+            synonyms:
+                - operating cash flow
+            expected_sign: "+"
+            collect: false
+
+        net cash from operating activities:
+            synonyms:
+                - net cash from operating activities
+                - cash flow from continuing operating activities
+            expected_sign: "+"
+            collect: true
+
+        net income (loss):
+            synonyms:
+                - net income
+                - net income (loss)
+                - net income from continuing operations
+            expected_sign: "+"
+            collect: true
+
+        depreciation amortization depletion:
+            synonyms:
+                - depreciation amortization depletion
+            expected_sign: "+"
+            collect: false
+
+        depreciation and amortisation expenses:
+            synonyms:
+                - depreciation and amortisation expenses
+                - depreciation and amortisation
+                - depreciation and amortization expenses
+                - depreciation and amortization
+            expected_sign: "+"
+            collect: true
+
+        deferred tax:
+            synonyms:
+                - deferred tax
+            expected_sign: "+"
+            collect: false
+
+        deferred income tax:
+            synonyms:
+                - deferred income tax
+            expected_sign: "+"
+            collect: false
+
+        stock based compensation:
+            synonyms:
+                - stock based compensation
+            expected_sign: "+"
+            collect: false
+
+        other non cash items:
+            synonyms:
+                - other non cash items
+            expected_sign: "+"
+            collect: false
+
+        change in working capital:
+            synonyms:
+                - change in working capital
+            expected_sign: "+"
+            collect: false
+
+        change in receivables:
+            synonyms:
+                - change in receivables
+            expected_sign: "+"
+            collect: false
+
+        changes in account receivables:
+            synonyms:
+                - changes in account receivables
+            expected_sign: "+"
+            collect: false
+
+        change in inventory:
+            synonyms:
+                - change in inventory
+            expected_sign: "+"
+            collect: false
+
+        change in payables and accrued expense:
+            synonyms:
+                - change in payables and accrued expense
+            expected_sign: "+"
+            collect: false
+
+        change in payable:
+            synonyms:
+                - change in payable
+            expected_sign: "+"
+            collect: false
+
+        change in account payable:
+            synonyms:
+                - change in account payable
+            expected_sign: "+"
+            collect: false
+
+        change in other current assets:
+            synonyms:
+                - change in other current assets
+            expected_sign: "+"
+            collect: false
+
+        change in other current liabilities:
+            synonyms:
+                - change in other current liabilities
+            expected_sign: "+"
+            collect: false
+
+        change in other working capital:
+            synonyms:
+                - change in other working capital
+            expected_sign: "+"
+            collect: false
+
+        increase (decrease) in other items:
+            synonyms:
+                - increase (decrease) in other items
+                - change in other items
+            expected_sign: "+"
+            collect: true
+
+        investing cash flow:
+            synonyms:
+                - investing cash flow
+            expected_sign: "+"
+            collect: false
+
+        net cash from investing activities:
+            synonyms:
+                - net cash from investing activities
+                - cash flow from continuing investing activities
+            expected_sign: "+"
+            collect: true
+
+        net ppep and sale:
+            synonyms:
+                - net ppep and sale
+            expected_sign: "+"
+            collect: false
+
+        purchase of ppe:
+            synonyms:
+                - purchase of ppe
+            expected_sign: "+"
+            collect: false
+
+        net intangibles purchase and sale:
+            synonyms:
+                - net intangibles purchase and sale
+            expected_sign: "+"
+            collect: false
+
+        purchase of intangibles:
+            synonyms:
+                - purchase of intangibles
+            expected_sign: "+"
+            collect: false
+
+        net business purchase and sale:
+            synonyms:
+                - net business purchase and sale
+            expected_sign: "+"
+            collect: false
+
+        purchase of business:
+            synonyms:
+                - purchase of business
+            expected_sign: "+"
+            collect: false
+
+        net investment purchase and sale:
+            synonyms:
+                - net investment purchase and sale
+            expected_sign: "+"
+            collect: false
+
+        purchase of investment:
+            synonyms:
+                - purchase of investment
+            expected_sign: "+"
+            collect: false
+
+        sale of investment:
+            synonyms:
+                - sale of investment
+            expected_sign: "+"
+            collect: false
+
+        sale (repurchase) of equity:
+            synonyms:
+                - sale (repurchase) of equity
+                - sale of equity
+            expected_sign: "+"
+            collect: true
+
+        investment in other assets:
+            synonyms:
+                - investment in other assets
+                - net other investing changes
+            expected_sign: "+"
+            collect: true
+
+        financing cash flow:
+            synonyms:
+                - financing cash flow
+            expected_sign: "+"
+            collect: false
+
+        other financing activities:
+            synonyms:
+                - other financing activities
+                - cash flow from continuing financing activities
+            expected_sign: "+"
+            collect: true
+
+        proceeds from issuance of debt:
+            synonyms:
+                - net issuance payments of debt
+            expected_sign: "+"
+            collect: true
+
+        net long term debt issuance:
+            synonyms:
+                - net long term debt issuance
+            expected_sign: "+"
+            collect: false
+
+        long term debt issuance:
+            synonyms:
+                - long term debt issuance
+            expected_sign: "+"
+            collect: false
+
+        repayments of long term debt:
+            synonyms:
+                - long term debt payments
+                - repayments of long term debt
+                - long term debt repayments
+            expected_sign: "+"
+            collect: true
+
+        net short term debt issuance:
+            synonyms:
+                - net short term debt issuance
+            expected_sign: "+"
+            collect: false
+
+        short term debt payments:
+            synonyms:
+                - short term debt payments
+            expected_sign: "+"
+            collect: false
+
+        net common stock issuance:
+            synonyms:
+                - net common stock issuance
+            expected_sign: "+"
+            collect: false
+
+        common stock issuance:
+            synonyms:
+                - common stock issuance
+            expected_sign: "+"
+            collect: false
+
+        common stock payments:
+            synonyms:
+                - common stock payments
+            expected_sign: "+"
+            collect: false
+
+        cash dividends paid:
+            synonyms:
+                - cash dividends paid
+            expected_sign: "+"
+            collect: false
+
+        common stock dividend paid:
+            synonyms:
+                - common stock dividend paid
+            expected_sign: "+"
+            collect: false
+
+        dividends or distributions paid:
+            synonyms:
+                - dividends or distributions paid
+                - dividends paid
+            expected_sign: "+"
+            collect: true
+
+
+        net other financing charges:
+            synonyms:
+                - net other financing charges
+            expected_sign: "+"
+            collect: false
+
+        end cash position:
+            synonyms:
+                - end cash position
+            expected_sign: "+"
+            collect: false
+
+        net increase in cash and equivalents:
+            synonyms:
+                - net increase in cash and equivalents
+                - changes in cash and equivalents
+                - changes in cash
+                - net increase in cash
+            expected_sign: "+"
+            collect: true
+
+        exchange rate fluctuations:
+            synonyms:
+                - exchange rate fluctuations
+                - effect of exchange rate changes
+            expected_sign: "+"
+            collect: true
+
+        beginning cash position:
+            synonyms:
+                - beginning cash position
+            expected_sign: "+"
+            collect: false
+
+        income tax paid supplemental data:
+            synonyms:
+                - income tax paid supplemental data
+            expected_sign: "+"
+            collect: false
+
+        interest paid supplemental data:
+            synonyms:
+                - interest paid supplemental data
+            expected_sign: "+"
+            collect: false
+
+        capital expenditure:
+            synonyms:
+                - capital expenditure
+            expected_sign: "+"
+            collect: true
+
+        issuance of capital stock:
+            synonyms:
+                - issuance of capital stock
+            expected_sign: "+"
+            collect: false
+
+        issuance of debt:
+            synonyms:
+                - issuance of debt
+            expected_sign: "+"
+            collect: false
+
+        repayment of debt:
+            synonyms:
+                - repayment of debt
+            expected_sign: "+"
+            collect: false
+
+        repurchase of capital stock:
+            synonyms:
+                - repurchase of capital stock
+            expected_sign: "+"
+            collect: false
+
+        free cash flow:
+            synonyms:
+                - free cash flow
+            expected_sign: "+"
+            collect: false

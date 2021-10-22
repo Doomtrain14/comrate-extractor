@@ -59,6 +59,27 @@ is-deeply $results, {
 
 my $sheets = $xr.workbook.sheets;
 
+
+$filename = 'Annual_CashFlow_AAPL.xlsx';
+$workbook = ComRate::Extractor::Workbook.new(:$ess,:$filename);
+$xr = ComRate::Extractor.new(:$ess,:$workbook);
+$results = $xr.extract;
+
+is-deeply $results, {
+    "cashflow" => {
+       "capital expenditure"                    => "-7309",
+       "depreciation and amortisation expenses" => "11056",
+       "investment in other assets"             => "-791",
+       "net cash from investing activities"     => "-4289",
+       "net cash from operating activities"     => "80674",
+       "net income (loss)"                      => "57411",
+       "net increase in cash and equivalents"   => "-10435",
+       "other financing activities"             => "-86820",
+       "proceeds from issuance of debt"         => "2499",
+       "repayments of long term debt"           => "-12629"
+     }
+}, "Overall results - Cashflow";
+
 $filename = 'BS_PL_Summary.xlsx';
 $workbook = ComRate::Extractor::Workbook.new(:$ess,:$filename);
 $workbook.load;
