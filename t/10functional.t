@@ -26,7 +26,6 @@ is-deeply $results, {
         "income tax expense"                          => "-9680",
         "interest expense"                            => "-2873",
         "net income"                                  => "57411",
-        "non-operating income"                        => "890",
         "sales revenue"                               => "274515",
         "selling general and administrative expenses" => "-19916"
       }
