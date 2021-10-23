@@ -156,23 +156,20 @@ method identify {
 
         for $.ess.conf<params>{ $.sheet_name }<params>.kv -> $param, %param_inf {
 
-            #my $score = 0;
-            #for |%param_inf<synonyms> -> $synonym {
-        #        my $syn_score = $sc.py.call('__main__','compare',%key_inf<title>.lc,$synonym.lc);
-        #        $score = $syn_score if $syn_score > $score;
-        #    }
             $sc.type = $param;
             $sc.synonyms = |%param_inf<synonyms>;
             $sc.input = %key_inf<title>;
             my $score = $sc.evaluate;
 
-            %best = ( :$score, :$param, :%param_inf ) if $score > %best<score>;
-
+            if $score > %best<score> {
+                unless %.identified{ $param } and %.identified{ $param }<score> > $score {
+                    %best = ( :$score, :$param, :%param_inf );
+                }
+            }
         }
 
-        #say "score: %best<score> --- key_field: {%key_inf<title>} param: %best<param>";
-
         %.identified{ %best<param> } = %key_inf;
+        %.identified{ %best<param> }<score> = %best<score>;
         %.collect{ %best<param> } = %key_inf if %best<param_inf><collect>;
 
     }

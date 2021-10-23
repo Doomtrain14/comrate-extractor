@@ -11,8 +11,6 @@ method evaluate{
 
     my $score = 0;
 
-    #say "input: $.input";
-
     for @.synonyms -> $synonym {
         #say "   synonym: $synonym";
         my $syn_score = $.py.call('__main__','compare',$.input.lc,$synonym.lc);

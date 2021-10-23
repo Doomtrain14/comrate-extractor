@@ -3,7 +3,7 @@ use ComRate::Extractor::Identifier;
 use ComRate::Extractor::Worksheet;
 constant Identifier = ComRate::Extractor::Identifier;
 constant Worksheet = ComRate::Extractor::Worksheet;
-
+use Data::Dump;
 
 unit class ComRate::Extractor::Identifier_Structure is Identifier;
 
@@ -37,6 +37,8 @@ method identify_row_types {
         @.row_types.push: $row_type;
     }
 
+    #say "row types: " ~ Dump( @.row_types );
+
 }
 
 
@@ -47,7 +49,8 @@ method key_fields {
 
     for @rows.kv -> $i, $row_num {
         next if @.row_types[ $i ] !~~ /[data||formula]/;
-        my $label = $.coord_to_cell_label( $row_num, $.key_col ),
+        #say "i: $i";
+        my $label = $.coord_to_cell_label( $row_num, $.key_col );
         @kf.push: {
             label => $label,
             title => $.worksheet.cell( $row_num, $.key_col ).value,
@@ -55,6 +58,7 @@ method key_fields {
         };
     }
 
+    #say "KF: " ~ @kf.elems ~ Dump( @kf );
     return @kf;
 }
 
@@ -147,7 +151,11 @@ method identify_row_type( Int $row_num ) {
     for $.worksheet.min_col .. $.worksheet.max_col -> $col_num {
         my $cell = $.worksheet.cell( $row_num, $col_num );
         if $cell.type {
-            $row_type = 'text' if $cell.type eq 'Text' and $cell.value and $row_type eq 'empty';
+            if $cell.type eq 'Text' and $cell.value and $row_type eq 'empty' {
+                $row_type = 'text';
+            }
+
+
             $row_type = 'date' if $cell.type eq 'Date';
             if $cell.type eq 'Numeric' {
                 if $cell.value.Str ~~ / ^ [19||20] \d\d $ / {
@@ -156,7 +164,9 @@ method identify_row_type( Int $row_num ) {
                     $row_type = 'data'
                 }
             }
+            $row_type = 'data' if $cell.type eq 'Text' and $cell.value and $cell.value.Str eq '-';
         }
+
         if $row_type ne 'formula' and $cell.formula {
             $row_type = 'formula';
             #say "row $row_num formula " ~ $cell.formula;

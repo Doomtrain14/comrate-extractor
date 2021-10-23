@@ -10,14 +10,6 @@ income:
             expected_sign: "+"
             collect: true
 
-        sales revenue:
-            synonyms:
-                - sales revenue
-                - revenue
-                - total revenue
-            expected_sign: "+"
-            collect: true
-
         cost of revenue:
             synonyms:
                 - cost of revenue
@@ -26,15 +18,21 @@ income:
             expected_sign: "-"
             collect: true
 
-        operating revenue:
+        sales revenue:
             synonyms:
+                - sales revenue
                 - operating revenue
+                - revenue
+                - total revenue
             expected_sign: "+"
-            collect: false
+            collect: true
 
-        non-operating revenue:
+        non-operating income:
             synonyms:
                 - non-operating revenue
+                - non-operating income
+                - net non-operating income
+                - net non-operating income (expense)
             expected_sign: "+"
             collect: true
 
@@ -201,15 +199,15 @@ income:
             expected_sign: "-"
             collect: true
 
-        pretax income:
+        earnings before tax:
             synonyms:
                 - pretax income
                 - earnings before tax
-                - ebt
+                - EBT
             expected_sign: "+"
             collect: true
 
-        tax provision:
+        income tax expense:
             synonyms:
                 - tax provision
                 - tax
@@ -217,7 +215,7 @@ income:
                 - income tax expense
                 - tax expense
             expected_sign: "-"
-            collect: false
+            collect: true
 
         net income:
             synonyms:
@@ -247,12 +245,6 @@ income:
             components:
                 - sales revenue
                 - cost of revenue
-            eqn_type: bound
-
-        sales revenue:
-            components:
-                - operating revenue
-                - non-operating revenue
             eqn_type: bound
 
         operating expenses:
@@ -939,7 +931,7 @@ balance:
             expected_sign: "-"
             collect: true
 
-        total long term liabilities:
+        total non current liabilities:
             synonyms:
                 - total non current liabilities
                 - total long term liabilities
