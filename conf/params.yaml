@@ -142,7 +142,7 @@ income:
             expected_sign: "-"
             collect: false
 
-        non-operating expenses:
+        non-operating expense:
             synonyms:
                 - non-operating expenses
                 - non-operating expense
@@ -199,7 +199,7 @@ income:
             expected_sign: "-"
             collect: true
 
-        earnings before tax:
+        pretax income:
             synonyms:
                 - pretax income
                 - earnings before tax
@@ -247,23 +247,23 @@ income:
                 - cost of revenue
             eqn_type: bound
 
-        operating expenses:
+        operating expense:
             components:
                 - selling general and administrative expenses
                 - research and development
             eqn_type: unbound
 
-        total expenses:
+        total expense:
             components:
                 - cost of revenue
-                - operating expenses
-                - non-operating expenses
+                - operating expense
+                - non-operating expense
             eqn_type: bound
 
         operating income:
             components:
                 - gross profit
-                - operating expenses
+                - operating expense
             eqn_type: bound
 
         EBIT:
@@ -283,6 +283,7 @@ income:
             components:
                 - depreciation
                 - amortisation
+            eqn_type: bound
 
         non-operating expense:
             components:
@@ -879,7 +880,7 @@ balance:
             synonyms:
                 - long term notes payable
                 - non-current notes payable
-            expected sign: "-"
+            expected_sign: "-"
             collect: true
 
         commercial paper:
@@ -1228,6 +1229,8 @@ balance:
         treasury shares number:
             synonyms:
                 - treasury shares number
+            expected_sign: "+"
+            collect: false
 
 cashflow:
     params:

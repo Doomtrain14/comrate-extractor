@@ -59,7 +59,6 @@ for %param.kv -> $sheet_name, $sv {
             :eqn_type($sv<equations>{$param_name}<eqn_type>),
             :components(@components)
         );
-        exit;
     }
 }
 
