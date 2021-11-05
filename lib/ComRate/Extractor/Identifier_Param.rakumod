@@ -1,12 +1,11 @@
 use v6;
-use ComRate::Extractor::Identifier;
 use ComRate::Extractor::Scorecard_Param;
+use ComRate::Extractor::Identifier;
 use Data::Dump;
 constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
 
-<<<<<<< HEAD
 has Str $.sheet_name is rw; # 'balance', 'cashflow', 'income'
 has %.structure is rw;
 has @.exp_eqns is rw;
@@ -17,6 +16,8 @@ has %.cache is rw;
 has @.key_fields is rw;
 has %.collect is rw;
 
+has %.index_ws is rw;
+
 method index{
 
     # %.equations needs replacing with input from the yaml
@@ -24,45 +25,37 @@ method index{
     # be "bound" only if all constituent equations are "bound"
     # but "unbound" if any one is "unbound"
 
-    for |%.equations<income>.kv -> $param, @comps {
-        self.expand_comps( $param, @comps );
-=======
-# %.relationships and %.params below should be moved to conf/params.yaml
+    for |$.ess.conf<params>.kv -> $sheet_name, %sheet_info {
 
-has %.equations = (
-    income => {
-        'gross profit' => [ 'sales revenue', 'cost of revenue' ],
-        'sales revenue' => [ 'operating revenue', 'non-operating revenue' ],
-        'operating expenses' => [ 'selling general and administrative expenses', 'research and development'],
-        'total expenses' => [ 'cost of revenue', 'operating expenses', 'non-operating expenses' ],
-        'operating income' => [ 'gross profit', 'operating expenses' ],
-        'EBIT' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
-        'EBITDA' => [ 'EBIT', 'depreciation and amortisation' ],
-        'depreciation and amortisation' => [ 'depreciation', 'amortisation' ]
-        'non-operating expenses' => [ 'interest expense'],
-        'non-operating income' => [ 'interest income'],
-        'net non-operating income (expense)' => [ 'non-operating income', 'non-operating expense' ],
-        'net other income (expense)' => [ 'other income', 'other expense' ],
-        'total unusual items' => [ 'unusual income', 'unusual expense' ],
-        'pretax income' => [ 'operating income', 'net non-operating income (expense)', 'net other income (expense)' ],
-        'net income' => [ 'pretax income', 'tax provision' ]
->>>>>>> 5785939 (serialize params.yaml to db via Red (except equations num_comps))
+        my %params = ( name => $sheet_name );
+
+        my $sheet_r = $.ess.red.set('Sheet').find( %params );
+        %.index_ws<sheet_id> = $sheet_r.id;
+
+        for |%sheet_info<equations>.kv -> $param, %param_info {
+
+#    for |%.equations<income>.kv -> $param, @comps {
+          self.expand_comps( $sheet_name, $param, %param_info<components> );
+        }
     }
 
 }
 
-<<<<<<< HEAD
 
-
-method expand_comps( $param, @comps ) {
+method expand_comps( $sheet_name, $param, @comps ) {
     return if self.seen( $param, @comps );
     self.write_output( $param, @comps );
 
     for @comps.kv -> $i, $comp {
         my @comps_exp = @comps;
 
-        if %.equations<income>{ $comp } {
-            my @child_comps = |%.equations<income>{ $comp };
+#        if %.equations<income>{ $comp } {
+
+        my $eqn = $.ess.conf<params>{ $sheet_name }<equations>{ $comp };
+
+        if $eqn {
+            #my @child_comps = |%.equations<income>{ $comp };
+            my @child_comps = $eqn<components>;
             my $recurse = False;
             for @child_comps -> $child_comp {
                 if $param eq $child_comp { $recurse = True; last }
@@ -71,22 +64,9 @@ method expand_comps( $param, @comps ) {
 
             if not $recurse {
                 @comps_exp.splice( $i, 1, |@child_comps );
-                self.expand_comps( $param, @comps_exp );
+                self.expand_comps( $sheet_name, $param, @comps_exp );
             }
         }
-=======
-has %.params = (
-    'income' => {
-        'gross profit' => [ 'gross margin', 'gross income', 'sales profit' ],
-        'selling general and administrative expenses' => [
-            'selling general and administration expenses',
-            'sales general and administration expenses',
-        ],
-        'sales revenue' => [ 'revenue' ],
-        'cost of revenue' => [ 'cost of goods sold', 'cost of sales' ],
-        'operating income' => [ 'operating revenue' ],
-        'net income' => [ 'net earnings' ]
->>>>>>> 5785939 (serialize params.yaml to db via Red (except equations num_comps))
     }
 }
 
@@ -101,6 +81,36 @@ method seen( $param, @comps ){
 method write_output( $param, @comps ){
 
     # write to the database here
+    my $param_r = $.ess.red.set('SheetParam').find_or_create({
+        sheet_id => %.index_ws<sheet_id>,
+        name => $param
+    });
+
+    # unless $param_r {
+    #     $param_r = $.ess.schema('SheetParam', 'create', {
+    #         sheet_id => %.index_ws<sheet_id>,
+    #         name => $param
+    #     });
+    # }
+
+    my $eqn_r = $.ess.red.set('SheetParamEqn').create({
+        param_id => $param_r.id,
+        num_comps => @comps.elems
+    });
+
+    for @comps -> $comp {
+
+        my $comp_r = $.ess.red.set('SheetParam').find_or_create({
+            sheet_id => %.index_ws<sheet_id>,
+            name => $comp
+        });
+
+        $.ess.red.set('SheetParamEqnComp').create({
+            eqn_id => $eqn_r.id,
+            param_id => $comp_r.id
+        });
+
+    }
 
     $.line_count++;
     say "$.line_count: $param:\n";

@@ -1,6 +1,6 @@
 use v6;
 use ComRate::Extractor::Scorecard;
-use Inline::Python;
+#use Inline::Python;
 
 unit class ComRate::Extractor::Scorecard_Sheet is ComRate::Extractor::Scorecard;
 

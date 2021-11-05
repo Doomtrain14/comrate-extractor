@@ -1,0 +1,10 @@
+---
+database:
+    type: Pg
+    user: <db_user>
+    name: <db_name>
+    password: <db_password>
+dir:
+    data: data
+schema:
+    module_prefix: ComRate::Extractor::Schema
