@@ -2,6 +2,7 @@ use v6;
 use ComRate::Extractor::Scorecard_Param;
 use ComRate::Extractor::Identifier;
 use Data::Dump;
+use ComRate::Extractor::Schema::SheetParamEqn;
 constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
@@ -25,17 +26,36 @@ method index{
     # be "bound" only if all constituent equations are "bound"
     # but "unbound" if any one is "unbound"
 
+    #die "before";
+
+#    ComRate::Extractor::Schema::SheetParamEqn.^all.grep({ True }).delete;
+
+#    die "dead";
+    $.ess.red.set('SheetParamEqnComp').delete;
+    $.ess.red.set('SheetParamEqn').delete;
+    $.ess.red.set('SheetParam').delete;
+
     for |$.ess.conf<params>.kv -> $sheet_name, %sheet_info {
 
-        my %params = ( name => $sheet_name );
+        my $sheet_r = $.ess.red.set('Sheet').find({ name => $sheet_name });
 
-        my $sheet_r = $.ess.red.set('Sheet').find( %params );
+        for |%sheet_info<params>.kv -> $param_name, %param_info {
+            $.ess.red.set('SheetParam').create({
+                sheet_id => $sheet_r.id,
+                name => $param_name,
+                collect => %param_info<collect>,
+                expected_sign => %param_info<expected_sign>
+            });
+        }
+
+        #die "finished sheet_param";
+
         %.index_ws<sheet_id> = $sheet_r.id;
 
-        for |%sheet_info<equations>.kv -> $param, %param_info {
+        for |%sheet_info<equations>.kv -> $param_name, %param_info {
 
 #    for |%.equations<income>.kv -> $param, @comps {
-          self.expand_comps( $sheet_name, $param, %param_info<components> );
+          self.expand_comps( $sheet_name, $param_name, %param_info<components> );
         }
     }
 
