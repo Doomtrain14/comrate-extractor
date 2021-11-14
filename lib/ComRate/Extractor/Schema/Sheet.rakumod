@@ -1,4 +1,6 @@
-use Red;
+use v6;
+
+use Red:ver<0.1.40>:api<2>;
 
 model ComRate::Extractor::Schema::Sheet is table<sheet> {
     has UInt    $.id        is serial;

@@ -3,9 +3,10 @@ use Data::Dump;
 use ComRate::Extractor::Essentials;
 use ComRate::Extractor::Workbook;
 use ComRate::Extractor::Worksheet;
-use ComRate::Extractor::Identifier_Sheet;
 use ComRate::Extractor::Identifier_Param;
+use ComRate::Extractor::Identifier_Sheet;
 use ComRate::Extractor::Identifier_Structure;
+
 
 
 
@@ -57,15 +58,15 @@ method extract {
         #say "identified: " ~ Dump( $param_idr.identified );
         #say "collect: " ~ $param_idr.collect.gist;
         for $param_idr.collect.kv -> $param, %key_inf {
-            my $row_num = %key_inf<position>[0];
-            my $value = $worksheet.cell( $row_num, $structure_idr.data_col ).value;
-            %sheet_results{ $param } = $value;
+            #my $row_num = %key_inf<position>[0];
+            #my $value = $worksheet.cell( $row_num, $structure_idr.data_col ).value;
+            %sheet_results{ $param } = %key_inf<value>;
         }
         #say "identified: " ~ Dump( $param_idr.identified );
         %results{ $sheet_name } = %sheet_results;
+
+		say "collect: " ~ Dump( $param_idr.collect );
 	}
-
-
 
     return %results;
 

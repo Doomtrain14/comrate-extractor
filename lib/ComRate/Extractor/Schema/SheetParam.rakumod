@@ -1,4 +1,4 @@
-use Red:api<2>;
+use Red:ver<0.1.40>:api<2>;
 
 model ComRate::Extractor::Schema::SheetParam is table<sheet_param> {
     has UInt    $.id                is serial;
@@ -8,7 +8,7 @@ model ComRate::Extractor::Schema::SheetParam is table<sheet_param> {
                                     );
 
     has Str     $.name              is column;
-    has Str     $.sign              is column;
+    has Str     $.expected_sign     is column;
     has Int     $.collect           is column;
     has         $.sheet             is relationship(
                                         *.sheet_id,

@@ -17,7 +17,7 @@ sub MAIN ( Str :$filename ){
 	);
 
     my $xr = ComRate::Extractor.new(
-		:$ess,
+				:$ess,
         :$workbook
     );
 

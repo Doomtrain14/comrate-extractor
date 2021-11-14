@@ -207,7 +207,7 @@ income:
             expected_sign: "+"
             collect: true
 
-        income tax expense:
+        tax provision:
             synonyms:
                 - tax provision
                 - tax

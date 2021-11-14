@@ -1,5 +1,5 @@
 use v6;
-use Red;
+use Red:ver<0.1.40>:api<2>;
 use Data::Dump;
 
 unit class ComRate::Extractor::RedWrap;
@@ -51,13 +51,19 @@ method search( %p = () ){
 }
 
 method find( %p = () ){
+    say "finding " ~ Dump( %p );
     my $rs = self.search( %p );
+    if $rs[0] {
+      say "found";
+    } else {
+      die "not found";
+    }
     return $rs[0];
 }
 
 method find_or_create( %p = () ) {
     my $param_r = $.find( %p );
-    $param_r = $.create( %p ) unless $param_r;
+    #$param_r = $.create( %p ) unless $param_r;
     return $param_r;
 }
 
@@ -72,13 +78,35 @@ method match( $rec, %params ){
     return $match;
 }
 
-method create( %p = () ){
-    return self!do( 'create', %p );
-}
+method create( %p = %() ){ return self!do( 'create', %p ); }
+method delete( %p = %() ){ return self!do( 'delete', %p ); }
+
+#method delete( %p = %() ){
+#    my $resp;
+#    if not %p {
+#        my @all = ::($.table).^all.grep({ True });
+#        for @all -> $row {
+#            $row.^delete;
+#        }
+#    } else {
+#        $resp = self!do( 'delete', %p );
+#    }
+#    return $resp;
+#}
 
 
-method !do( $op, %p = () ){
+method !do( $op, %p = %() ){
     require ::($.table);
-    my $resp = ::($.table).HOW."$op"( ::($.table), |%p );
+
+    my $resp;
+#    try {
+        #my $*RED-DEBUG = True;
+        $resp = ::($.table).HOW."$op"( ::($.table), |%p );
+#    }
+
+#    if $! {
+#        die "ERROR: " ~ $!.orig-exception.internal-query;
+#    }
+
     return $resp;
 }
