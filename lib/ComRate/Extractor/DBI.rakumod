@@ -44,7 +44,7 @@ method !select( %params = %(), %config = %() ) {
     if %config<join> {
 
         for %config<join>.kv -> $moniker, %terms {
-            my $table = %.tables{ $moniker };
+            my $table = %!tables{ $moniker };
             $sql ~= " JOIN $table ON ";
 
             for %terms.kv -> $me_col, $you_col {
@@ -58,7 +58,7 @@ method !select( %params = %(), %config = %() ) {
     }
     $sql ~= ';';
 
-    say "SQL: $sql";
+    say "SQL: $sql (config: " ~ Dump( %config ) ~ ")";
     my $sth = $!dbh.execute( $sql );
 
     return $sth;
@@ -70,7 +70,7 @@ method !where-string( %params ){
 
     for %params.kv -> $k, $v {
         $where-string ~= ' AND ' if $where-string;
-        $where-string ~= "$k=";
+        $where-string ~= $.table ~ '.' ~ "$k=";
         if $v.isa(Str) {
             $where-string ~= "'$v'";
         } elsif $v.isa(Num) or $v.isa(Int) {
@@ -88,15 +88,15 @@ method !where-string( %params ){
 
 
 
-method find( %params ){
-    my $sth = self!select( %params );
+method find( %params, %config = %() ){
+    my $sth = self!select( %params, %config );
     my %row = $sth.row(:hash);
     return %row;
 }
 
 method search( %params, %config = %() ){
 
-    my $sth = self!select( %params );
+    my $sth = self!select( %params, %config );
     my @all-rows = $sth.allrows(:array-of-hash);
     return @all-rows;
 }

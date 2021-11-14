@@ -1,8 +1,8 @@
 use v6;
-use ComRate::Extractor::Scorecard_Param;
 use ComRate::Extractor::Identifier;
+use ComRate::Extractor::Scorecard_Param;
 use Data::Dump;
-use ComRate::Extractor::Schema::SheetParamEqn;
+#use ComRate::Extractor::Schema::SheetParamEqn;
 constant Identifier = ComRate::Extractor::Identifier;
 
 unit class ComRate::Extractor::Identifier_Param is Identifier;
@@ -282,26 +282,30 @@ method identify_missing {
         sheet_id => %sheet_r<id>
     });
 
+    # say "collect pre missing: ";
+    # for %.collect.kv -> $coll {
+    #     say "    $coll";
+    # }
+    # say "to collect: ";
+    # for @to-collect -> %param {
+    #     say "    %param<name>";
+    # }
+
     for @to-collect -> %param {
         next if %.collect{ %param<name> };
-        say "missing: %param<name>";
         my %param_r = $.ess.dbi.set('SheetParam').find({
             name => %param<name>,
             sheet_id => %sheet_r<id>
         });
-
-        say "param_r: " ~ Dump( %param_r );
 
         my @eqn_rs = $.ess.dbi.set('SheetParamEqn').search({
             param_id => %param_r<id>,
             eqn_type => 'bound'
         });
 
-        say "found {@eqn_rs.elems} equations with %param_r<name> as subject";
+        #say "found {@eqn_rs.elems} equations with %param_r<name> as subject";
 
         for @eqn_rs -> %eqn_r {
-
-            say "eqn_r: " ~ Dump( %eqn_r );
 
             my @comps_rs = $.ess.dbi.set('SheetParamEqnComp').search({
                 eqn_id => %eqn_r<id>
@@ -316,8 +320,6 @@ method identify_missing {
             my $total = 0;
             for @comps_rs -> %comps_r {
 
-                say "comp name: %comps_r<name>";
-
                 if %.identified{ %comps_r<name> } {
                     $total += %.identified{ %comps_r<name> }<value>;
                 } else {
@@ -327,10 +329,72 @@ method identify_missing {
             }
 
             if $helpful {
-                die "helfule!!"
+                #die "helfule!!"
+                #say "FIRST COLLECT: %param<name>";
                 %.collect{ %param<name> } = {
                     value => $total
                 };
+                last;
+            }
+        }
+
+        next if %.collect{ %param<name> };
+
+        my @child_rs = $.ess.dbi.set('SheetParamEqnComp').search({
+            param_id => %param_r<id>
+        });
+
+        for @child_rs -> %child_r {
+            my %eqn_r = $.ess.dbi.set('SheetParamEqn').find({
+                id => %child_r<eqn_id>
+            }, {
+                join => {
+                    'SheetParam' => {
+                        'param_id' => 'id'
+                    }
+                }
+            });
+
+            next if %eqn_r<eqn_type> ne 'bound';
+
+            my $helpful = True;
+            my $total = 0;
+
+            if %.identified{ %eqn_r<name> } {
+                say "%eqn_r<name> value: {%.identified{ %eqn_r<name> }<value>}";
+                my $value = %.identified{ %eqn_r<name> }<value>;
+                try { $total += $value; }
+            } else {
+                $helpful = False;
+                next;
+            }
+
+            my @comps_rs = $.ess.dbi.set('SheetParamEqnComp').search({
+                eqn_id => %eqn_r<id>
+            }, {
+                join => {
+                    'SheetParam' => {
+                        param_id => 'id'
+                    }
+                }
+            });
+
+            for @comps_rs -> %comp_r {
+                next if %comp_r<name> eq %param<name>;
+
+                if %.identified{ %comp_r<name> } {
+                    $total -= %.identified{ %comp_r<name> }<value>;
+                } else {
+                    $helpful = False;
+                    last;
+                }
+            }
+
+            if $helpful {
+                #say "COLLECTING: %param<name>";
+                %.collect{ %param<name> } = {
+                    value => $total;
+                }
                 last;
             }
         }
