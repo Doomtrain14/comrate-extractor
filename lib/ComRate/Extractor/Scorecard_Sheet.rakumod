@@ -1,6 +1,5 @@
 use v6;
 use ComRate::Extractor::Scorecard;
-#use Inline::Python;
 
 unit class ComRate::Extractor::Scorecard_Sheet is ComRate::Extractor::Scorecard;
 
@@ -29,11 +28,12 @@ has %.synonyms = {
     ]
 };
 
-
 method evaluate {
     die "evaluate called but worksheet type not specified" unless $.type;
     my @.dictionary = |%.synonyms{ $.type };
-    my $score = $.py.call('__main__','score',$.input.name,@.dictionary);
+    #my $score = $.py.call('__main__','score',$.input.name,@.dictionary);
+    my $score = $.best_ratio( $.input.name, @.dictionary );
     $.score = $score;
+    #say "Scorecard_Sheet score: $score";
     return $score;
 }

@@ -2,6 +2,9 @@ use v6;
 use ComRate::Extractor::Essentials;
 #no precompilation;
 #use Inline::Python;
+use Text::Levenshtein;
+use Data::Dump;
+
 
 unit class ComRate::Extractor::Scorecard;
 
@@ -10,18 +13,41 @@ has $.type is rw;
 has $.score is rw;
 has $.input is rw;
 
-#has Inline::Python $.py = sub{
-#    my $py = Inline::Python.new;
-#    $py.run(q:heredoc/PYTHON/);
-#from fuzzywuzzy import process, fuzz
+method ratio( $input, $target ){
 
-#def score(input, *dictionary):
-#    highest = process.extractOne(input,dictionary)
-#    return highest[1]
+    my $longest = $input.chars;
+    $longest = $target.chars if $target.chars > $longest;
+    #say "longest: " ~ Dump( $longest);
 
-#def compare(input, target):
-#    return fuzz.ratio( input, target )
-#PYTHON
+    my $lev = distance( $input, $target )[0];
+    #say "lev: " ~ Dump( $lev );
 
-#    return $py;
-#}();
+    my $m = $lev / $longest;
+    my $rat = 100 * ( 1 - ( $lev / $longest ) );
+    #say "lev $lev longest $longest m $m rat $rat";
+
+    return $rat;
+}
+
+
+method best_ratio( $input, @dictionary ){
+
+    my %best = (
+        score => 0,
+        di => Nil
+    );
+
+    for @dictionary -> $di {
+        my $score = $.ratio( $input, $di );
+        #say "input $input di: $di score: $score";
+
+        if $score > %best<score> {
+            %best<score> = $score;
+            %best<di> = $di
+        }
+    }
+
+    #say "input $input best ratio: %best<score> di: %best<di>";
+    #say "dictionary: " ~ Dump( @dictionary );
+    return %best<score>;
+}
