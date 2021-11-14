@@ -54,7 +54,8 @@ method key_fields {
         @kf.push: {
             label => $label,
             title => $.worksheet.cell( $row_num, $.key_col ).value,
-            position => [ $row_num, $.key_col ]
+            value => $.worksheet.cell( $row_num, $.data_col ).value,
+            position => [ $row_num, $.key_col ] 
         };
     }
 

@@ -1,8 +1,9 @@
 use v6;
-use Red;
-use ComRate::Extractor::RedWrap;
+use Red:ver<0.1.40>:api<2>;
+#use ComRate::Extractor::RedWrap;
 use YAML::Parser::LibYAML;
 use Data::Dump;
+use ComRate::Extractor::DBI;
 
 
 class ComRate::Extractor::Essentials {
@@ -10,8 +11,9 @@ class ComRate::Extractor::Essentials {
     has $!conf-dir = $*PROGRAM.IO.parent.parent.add('conf').resolve.Str;
     has $!conf-ext = 'yaml';
     has %.conf;
+    has $.dbi = ComRate::Extractor::DBI.new;
 
-    has ComRate::Extractor::RedWrap $.red;
+    #has ComRate::Extractor::RedWrap $.red;
 
     method !init-conf {
         my %conf;
@@ -30,16 +32,18 @@ class ComRate::Extractor::Essentials {
     }
 
 
-    method init-db{
-        my %db = %.conf<main><database>;
-        return database %db<type>, user => %db<user>, dbname => %db<name>, password => %db<password>;
-    }
+    # method init-db{
+    #     my %db = %.conf<main><database>;
+    #     return database %db<type>, user => %db<user>, dbname => %db<name>, password => %db<password>;
+    # }
+
+
 
     submethod TWEAK {
         %!conf = self!init-conf;
-        $!red = ComRate::Extractor::RedWrap.new(
-            prefix => %!conf<main><schema><module_prefix>
-        );
+        # $!red = ComRate::Extractor::RedWrap.new(
+        #     prefix => %!conf<main><schema><module_prefix>
+        # );
     }
 
 

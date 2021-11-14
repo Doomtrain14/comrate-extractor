@@ -31,17 +31,20 @@ method index{
 #    ComRate::Extractor::Schema::SheetParamEqn.^all.grep({ True }).delete;
 
 #    die "dead";
-    $.ess.red.set('SheetParamEqnComp').delete;
-    $.ess.red.set('SheetParamEqn').delete;
-    $.ess.red.set('SheetParam').delete;
+
+
+
+    $.ess.dbi.set('SheetParamEqnComp').delete;
+    $.ess.dbi.set('SheetParamEqn').delete;
+    $.ess.dbi.set('SheetParam').delete;
 
     for |$.ess.conf<params>.kv -> $sheet_name, %sheet_info {
 
-        my $sheet_r = $.ess.red.set('Sheet').find({ name => $sheet_name });
+        my %sheet_r = $.ess.dbi.set('Sheet').find({ name => $sheet_name });
 
         for |%sheet_info<params>.kv -> $param_name, %param_info {
-            $.ess.red.set('SheetParam').create({
-                sheet_id => $sheet_r.id,
+            $.ess.dbi.set('SheetParam').create({
+                sheet_id => %sheet_r<id>,
                 name => $param_name,
                 collect => %param_info<collect>,
                 expected_sign => %param_info<expected_sign>
@@ -50,21 +53,27 @@ method index{
 
         #die "finished sheet_param";
 
-        %.index_ws<sheet_id> = $sheet_r.id;
+        %.index_ws<sheet_id> = %sheet_r<id>;
 
         for |%sheet_info<equations>.kv -> $param_name, %param_info {
 
 #    for |%.equations<income>.kv -> $param, @comps {
-          self.expand_comps( $sheet_name, $param_name, %param_info<components> );
+          self.expand_comps(
+              $sheet_name,
+              $param_name,
+              %param_info<components>,
+              %param_info<eqn_type>
+          );
         }
+        say "ENDDDDDD";
     }
 
 }
 
 
-method expand_comps( $sheet_name, $param, @comps ) {
+method expand_comps( $sheet_name, $param, @comps, $eqn_type ) {
     return if self.seen( $param, @comps );
-    self.write_output( $param, @comps );
+    self.write_output( $param, @comps, $eqn_type );
 
     for @comps.kv -> $i, $comp {
         my @comps_exp = @comps;
@@ -83,8 +92,15 @@ method expand_comps( $sheet_name, $param, @comps ) {
             }
 
             if not $recurse {
+                my $eqn_type_exp = $eqn_type;
+                $eqn_type_exp = 'unbound' if $eqn<eqn_type> eq 'unbound';
                 @comps_exp.splice( $i, 1, |@child_comps );
-                self.expand_comps( $sheet_name, $param, @comps_exp );
+                self.expand_comps(
+                    $sheet_name,
+                    $param,
+                    @comps_exp,
+                    $eqn_type_exp
+                );
             }
         }
     }
@@ -98,13 +114,18 @@ method seen( $param, @comps ){
     return False;
 }
 
-method write_output( $param, @comps ){
+method write_output( $param, @comps, $eqn_type ){
 
-    # write to the database here
-    my $param_r = $.ess.red.set('SheetParam').find_or_create({
+    #write to the database here
+
+    say "0: $param";
+
+    my %param_r = $.ess.dbi.set('SheetParam').find({
         sheet_id => %.index_ws<sheet_id>,
         name => $param
     });
+
+    say "1: $param";
 
     # unless $param_r {
     #     $param_r = $.ess.schema('SheetParam', 'create', {
@@ -113,22 +134,27 @@ method write_output( $param, @comps ){
     #     });
     # }
 
-    my $eqn_r = $.ess.red.set('SheetParamEqn').create({
-        param_id => $param_r.id,
-        num_comps => @comps.elems
+    my %eqn_r = $.ess.dbi.set('SheetParamEqn').create({
+        param_id => %param_r<id>,
+        num_comps => @comps.elems,
+        eqn_type => $eqn_type
     });
+
+    say "eqn_r: " ~ Dump( %eqn_r );
+
+    say "2: $param";
 
     for @comps -> $comp {
 
-        my $comp_r = $.ess.red.set('SheetParam').find_or_create({
+        my %comp_r = $.ess.dbi.set('SheetParam').find-or-create({
             sheet_id => %.index_ws<sheet_id>,
             name => $comp
         });
 
-        $.ess.red.set('SheetParamEqnComp').create({
-            eqn_id => $eqn_r.id,
-            param_id => $comp_r.id
-        });
+       $.ess.dbi.set('SheetParamEqnComp').create({
+           eqn_id => %eqn_r<id>,
+           param_id => %comp_r<id>
+       });
 
     }
 
@@ -240,4 +266,73 @@ method identify {
 
     }
 
+    self.identify_missing;
+
+}
+
+
+method identify_missing {
+
+    my %sheet_r = $.ess.dbi.set('Sheet').find({
+        name => $.sheet_name
+    });
+
+    my @to-collect = $.ess.dbi.set('SheetParam').search({
+        collect => True,
+        sheet_id => %sheet_r<id>
+    });
+
+    for @to-collect -> %param {
+        next if %.collect{ %param<name> };
+        say "missing: %param<name>";
+        my %param_r = $.ess.dbi.set('SheetParam').find({
+            name => %param<name>,
+            sheet_id => %sheet_r<id>
+        });
+
+        say "param_r: " ~ Dump( %param_r );
+
+        my @eqn_rs = $.ess.dbi.set('SheetParamEqn').search({
+            param_id => %param_r<id>,
+            eqn_type => 'bound'
+        });
+
+        say "found {@eqn_rs.elems} equations with %param_r<name> as subject";
+
+        for @eqn_rs -> %eqn_r {
+
+            say "eqn_r: " ~ Dump( %eqn_r );
+
+            my @comps_rs = $.ess.dbi.set('SheetParamEqnComp').search({
+                eqn_id => %eqn_r<id>
+            }, {
+              join => {
+                'SheetParam' => {
+                    'param_id' => 'id'
+                }
+            }});
+
+            my $helpful = True;
+            my $total = 0;
+            for @comps_rs -> %comps_r {
+
+                say "comp name: %comps_r<name>";
+
+                if %.identified{ %comps_r<name> } {
+                    $total += %.identified{ %comps_r<name> }<value>;
+                } else {
+                    $helpful = False;
+                    last;
+                }
+            }
+
+            if $helpful {
+                die "helfule!!"
+                %.collect{ %param<name> } = {
+                    value => $total
+                };
+                last;
+            }
+        }
+    }
 }

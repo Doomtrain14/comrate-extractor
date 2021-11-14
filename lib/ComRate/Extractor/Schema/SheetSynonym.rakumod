@@ -1,6 +1,6 @@
-use Red:api<2>;
+use Red:ver<0.1.40>:api<2>;
 
-model Comrate::Extractor::Schema::SheetSynonym is table<sheet_synonym>{
+model ComRate::Extractor::Schema::SheetSynonym is table<sheet_synonym>{
     has UInt    $!id            is serial;
     has Str     $.synonym       is column;
     has UInt    $.sheet_id      is referencing(

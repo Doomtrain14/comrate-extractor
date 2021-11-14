@@ -1,5 +1,5 @@
 use v6;
-use Red;
+use Red:ver<0.1.40>:api<2>;
 use Data::Dump;
 
 unit class ComRate::Extractor::RedWrap;

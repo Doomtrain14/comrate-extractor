@@ -1,8 +1,7 @@
 use v6;
 
-
-use ComRate::Extractor::Scorecard_Sheet;
 use ComRate::Extractor::Scorecard_Param;
+use ComRate::Extractor::Scorecard_Sheet;
 use ComRate::Extractor::Essentials;
 
 
