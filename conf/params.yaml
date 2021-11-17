@@ -989,6 +989,7 @@ balance:
         due to related parties non current:
             synonyms:
                 - due to related parties non current
+                - dueto related parties non current
             expected_sign: "-"
             collect: false
 
@@ -1232,6 +1233,610 @@ balance:
             expected_sign: "+"
             collect: false
 
+    equations:
+        total assets:
+            components:
+                - total current assets
+                - total non current assets
+            eqn_type: bound
+
+        total non current assets:
+            components:
+                - net ppe
+                - intangible assets
+                - investment properties
+                - investments and advances
+                - financial assets
+                - non current accounts receivable
+                - non current note receivables
+                - due from related parties non current
+                - non current deferred assets
+                - non current prepaid assets
+                - defined pension benefit
+                - other non current assets
+            eqn_type: bound
+
+        net ppe:
+            components:
+                - gross ppe
+                - accumalated depreciation
+            eqn_type: bound
+
+        gross ppe:
+            components:
+                - properties
+                - land and improvements
+                - buildings and improvements
+                - machinery furniture equipment
+                - other properties
+                - construction in progress
+                - leases
+            eqn_type: bound
+
+        properties:
+            components:
+                - properties
+            eqn_type: bound
+
+        land and improvements:
+            components:
+                - land and improvements
+            eqn_type: bound
+        
+        buildings and improvements:
+            components:
+                - buildings and improvements
+            eqn_type: bound
+
+        machinery furniture equipment:
+            components:
+                - machinery furniture equipment
+            eqn_type: bound
+
+        other properties:
+            components:
+                - other properties
+            eqn_type: bound
+    
+        construction in progress:
+            components:
+                - construction in progress
+            eqn_type: bound
+
+        leases:
+            components:
+                - leases
+            eqn_type: bound
+
+        accumalated depreciation:
+            components:
+                - accumalated depreciation
+            eqn_type: bound
+
+        intangible assets:
+            components:
+                - goodwill
+                - other intangible assets
+            eqn_type: bound
+
+        goodwill:
+            components:
+                - goodwill
+            eqn_type: bound
+
+        other intangible assets:
+            components:
+                - other intangible assets
+            eqn_type: bound
+
+        investment properties:
+            components:
+                - investment properties
+            eqn_type: bound
+
+        investments and advances:
+            components:
+                - long term equity investment
+                - investment in financial assets
+                - other investments
+            eqn_type: bound
+
+        long term equity investment:
+            components:
+                - investments in subsidiaries at cost
+                - investments in associates at cost
+                - investments in other ventures under equity method
+                - investments in joint ventures at cost
+            eqn_type: bound
+
+        investments in subsidiaries at cost:
+            components:
+                - investments in subsidiaries at cost
+            eqn_type: bound
+
+        investments in associates at cost:
+            components:
+                - investments in associates at cost
+            eqn_type: bound
+
+        investments in other ventures under equity method:
+            components:
+                - investments in other ventures under equity method
+            eqn_type: bound
+
+        investments in joint ventures at cost:
+            components:
+                - investments in joint ventures at cost
+            eqn_type: bound
+
+        investment in financial assets:
+            components:
+                - trading securities
+                - financial assets designated as fair value through profit or loss total
+                - available for sale securities
+                - held to maturity securities
+            eqn_type: bound
+
+        trading securities:
+            components:
+                - trading securities
+            eqn_type: bound
+
+        financial assets designated as fair value through profit or loss total:
+            components:
+                - financial assets designated as fair value through profit or loss total
+            eqn_type: bound
+
+        available for sale securities:
+            components:
+                - available for sale securities
+            eqn_type: bound
+
+        held to maturity securities:
+            components:
+                - held to maturity securities
+            eqn_type: bound
+
+        other investments:
+            components:
+                - other investments
+            eqn_type: bound
+
+        financial assets:
+            components:
+                - financial assets
+            eqn_type: bound
+
+        non current accounts receivable:
+            components:
+                - non current accounts receivable
+            eqn_type: bound
+
+        non current note receivables:
+            components:
+                - non current note receivables
+            eqn_type: bound
+
+        due from related parties non current:
+            components:
+                - due from related parties non current
+            eqn_type: bound
+
+        non current deferred assets:
+            components:
+                - non current deferred taxes assets
+            eqn_type: bound
+
+        non current deferred taxes assets:
+            components:
+                - non current deferred taxes assets
+            eqn_type: bound
+
+        non current prepaid assets:
+            components:
+                - non current prepaid assets
+            eqn_type: bound
+
+        defined pension benefit:
+            components:
+                - defined pension benefit
+            eqn_type: bound
+
+        other non current assets:
+            components:
+                - other non current assets
+            eqn_type: bound
+
+        total liabilities net minority interest:
+            components:
+                - total current liabilities
+                - total non current liabilities
+            eqn_type: bound
+
+        total current liabilities:
+            components:
+                - accrued expenses payable
+                - current provisions
+                - pension and other post retirement benefit plans current
+                - current debt and capital lease obligation
+                - current deferred liabilities
+                - other current liabilities
+            eqn_type: bound
+
+        accrued expenses payable:
+            components:
+                - payables
+                - current accrued expenses
+            eqn_type: bound
+
+        payables:
+            components:
+                - accounts payable
+                - total tax payable
+                - dividends payable
+                - due to related parties current
+                - other payable
+            eqn_type: bound
+
+        accounts payable:
+            components:
+                - accounts payable
+            eqn_type: bound
+
+        total tax payable:
+            components:
+                - income tax payable
+            eqn_type: bound
+
+        income tax payable:
+            components:
+                - income tax payable
+            eqn_type: bound
+
+        dividends payable:
+            components:
+                - dividends payable
+            eqn_type: bound
+
+        due to related parties current:
+            components:
+                - due to related parties current
+            eqn_type: bound
+
+        other payable:
+            components:
+                - other payable
+            eqn_type: bound
+
+        current accrued expenses:
+            components:
+                - interest payable
+            eqn_type: bound
+
+        interest payable:
+            components:
+                - interest payable
+            eqn_type: bound
+
+        current provisions:
+            components:
+                - current provisions
+            eqn_type: bound
+
+        pension and other post retirement benefit plans current:
+            components:
+                - pension and other post retirement benefit plans current
+            eqn_type: bound
+
+        current debt and capital lease obligation:
+            components:
+                - current debt
+                - current capital lease obligation
+            eqn_type: bound
+
+        current debt:
+            components:
+                - current notes payable
+                - commercial paper
+                - line of credit
+                - other current borrowings
+            eqn_type: bound
+
+        current notes payable:
+            components:
+                - current notes payable
+            eqn_type: bound
+
+        commercial paper:
+            components:
+                - commercial paper
+            eqn_type: bound
+
+        line of credit:
+            components:
+                - line of credit
+            eqn_type: bound
+
+        other current borrowings:
+            components:
+                - other current borrowings
+            eqn_type: bound
+
+        current capital lease obligation:
+            components:
+                - current capital lease obligation
+            eqn_type: bound
+
+        current deferred liabilities:
+            components:
+                - current deferred taxes liabilities
+                - current deferred revenue
+            eqn_type: bound
+
+        current deferred taxes liabilities:
+            components:
+                - current deferred taxes liabilities
+            eqn_type: bound
+
+        current deferred revenue:
+            components:
+                - current deferred revenue
+            eqn_type: bound
+
+        other current liabilities:
+            components:
+                - other current liabilities
+            eqn_type: bound
+
+        total non current liabilities:
+            components:
+                - long term provisions
+                - long term debt and capital lease obligation
+                - non current deferred liabilities
+                - trade and other payables non current
+                - due to related parties non current
+                - non current accrued expenses
+                - employee benefits
+                - derivative product liabilities
+                - preferred securities outside stock equity
+                - restricted common stock
+                - liabilities held for sale non current
+                - other non current liabilities
+            eqn_type: bound
+
+        long term provisions:
+            components:
+                - long term provisions
+            eqn_type: bound
+
+        long term debt and capital lease obligation:
+            components:
+                - long term debt
+                - long term capital lease obligation
+            eqn_type: bound
+
+        long term debt:
+            components:
+                - long term debt
+            eqn_type: bound
+
+        long term capital lease obligation:
+            components:
+                - long term capital lease obligation
+            eqn_type: bound
+
+        non current deferred liabilities:
+            components:
+                - non current deferred taxes liabilities
+                - non current deferred revenue
+            eqn_type: bound
+
+        non current deferred taxes liabilities:
+            components:
+                - non current deferred taxes liabilities
+            eqn_type: bound
+
+        non current deferred revenue:
+            components:
+                - non current deferred revenue
+            eqn_type: bound
+
+        trade and other payables non current:
+            components:
+                - trade and other payables non current
+            eqn_type: bound
+
+        due to related parties non current:
+            components:
+                - due to related parties non current
+            eqn_type: bound
+
+        non current accrued expenses:
+            components:
+                - non current accrued expenses
+            eqn_type: bound
+
+        employee benefits:
+            components:
+                - non current pension and other post retirement benefit plans
+            eqn_type: bound
+
+        non current pension and other post retirement benefit plans:
+            components:
+                - non current pension and other post retirement benefit plans
+            eqn_type: bound
+
+        derivative product liabilities:
+            components:
+                - derivative product liabilities
+            eqn_type: bound
+
+        preferred securities outside stock equity:
+            components:
+                - preferred securities outside stock equity
+            eqn_type: bound
+
+        restricted common stock:
+            components:
+                - restricted common stock
+            eqn_type: bound
+        
+        liabilities held for sale non current:
+            components:
+                - liabilities held for sale non current
+            eqn_type: bound
+
+        other non current liabilities:
+            components:
+                - other non current liabilities
+            eqn_type: bound
+
+        total equity gross minority interest:
+            components:
+                - total assets
+                - total liabilities net minority interest
+            eqn_type: bound
+
+        stockholders equity:
+            components:
+                - capital stock
+                - additional paid in capital
+                - retained earnings
+                - treasury stock
+                - gains losses not affecting retained earnings
+                - other equity interest
+            eqn_type: bound
+
+        capital stock:
+            components:
+                - preferred stock
+                - common stock
+                - other capital stock
+            eqn_type: bound
+
+        additional paid in capital:
+            components:
+                - additional paid in capital
+            eqn_type: bound
+
+        retained earnings:
+            components:
+                - retained earnings
+            eqn_type: bound
+
+        treasury stock:
+            components:
+                - treasury stock
+            eqn_type: bound
+
+        gains losses not affecting retained earnings:
+            components:
+                - unrealized gain loss
+                - minimum pension liabilities
+                - foreign currency translation adjustments
+                - fixed assets revaluation reserve
+                - other equity adjustments
+            eqn_type: bound
+
+        unrealized gain loss:
+            components:
+                - unrealized gain loss
+            eqn_type: bound
+
+        minimum pension liabilities:
+            components:
+                - minimum pension liabilities
+            eqn_type: bound
+
+        foreign currency translation adjustments:
+            components:
+                - foreign currency translation adjustments
+            eqn_type: bound
+
+        fixed assets revaluation reserve:
+            components:
+                - fixed assets revaluation reserve
+            eqn_type: bound
+
+        other equity adjustments:
+            components:
+                - other equity adjustments
+            eqn_type: bound
+
+        other equity interest:
+            components:
+                - other equity interest
+            eqn_type: bound
+
+        minority interest:
+            components:
+                - minority interest
+            eqn_type: bound
+
+        total capitalization:
+            components:
+                - total capitalization
+            eqn_type: bound
+
+        preferred stock equity:
+            components:
+                - preferred stock equity
+            eqn_type: bound
+
+        common stock equity:
+            components:
+                - common stock equity
+            eqn_type: bound
+
+        capital lease obligation:
+            components:
+                - capital lease obligation
+            eqn_type: bound
+
+        net fixed assets:
+            components:
+                - net fixed assets
+            eqn_type: bound
+
+        working capital:
+            components:
+                - working capital
+            eqn_type: bound
+
+        tangible book value:
+            components:
+                - tangible book value
+            eqn_type: bound
+
+        total debt:
+            components:
+                - total debt
+            eqn_type: bound
+
+        net debt:
+            components:
+                - net debt
+            eqn_type: bound
+
+        share issued:
+            components:
+                - share issued
+            eqn_type: bound
+
+        ordinary shares number:
+            components:
+                - ordinary shares number
+            eqn_type: bound
+
+        preferred shares number:
+            components:
+                - preferred shares number
+            eqn_type: bound
+
+        treasury shares number:
+            components:
+                - treasury shares number
+            eqn_type: bound
 cashflow:
     params:
         operating cash flow:
